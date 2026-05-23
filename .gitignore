@@ -1,4 +1,5 @@
 .vs
-
-/API/bin
-/API/obj
+API/bin
+API/obj
+Web/bin
+Web/obj
