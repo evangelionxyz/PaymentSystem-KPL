@@ -4,11 +4,11 @@ using MongoDB.Driver;
 
 namespace Minimarket.API.Services;
 
-public class CustomerService(IOptions<Settings> customerDatabaseSettings)
+public class CustomerService(IOptions<Settings> DatabaseSettings)
 {
-    private readonly IMongoCollection<Customer> _customerCollection = new MongoClient(customerDatabaseSettings.Value.ConnectionString)
-        .GetDatabase(customerDatabaseSettings.Value.DatabaseName)
-        .GetCollection<Customer>(customerDatabaseSettings.Value.CustomerCollectionName);
+    private readonly IMongoCollection<Customer> _customerCollection = new MongoClient(DatabaseSettings.Value.ConnectionString)
+        .GetDatabase(DatabaseSettings.Value.DatabaseName)
+        .GetCollection<Customer>(DatabaseSettings.Value.CustomerCollectionName);
 
     public async Task<List<Customer>> GetAsync() => 
         await _customerCollection.Find(_ => true).ToListAsync();

@@ -82,3 +82,12 @@ HTTPS is automatically handled by Dewacloud (Let’s Encrypt).
 Open: ```https://evangelion.user.cloudjkt02.com/api/payment```
 
 If it works → deployment is correct.
+
+Run On MongoDB:
+
+To get local Hostname and Local IP<br>:
+mongod@node76037-evangelion ```hostname -f```<br>
+mongod@node76037-evangelion ```hostname -I```
+
+Database__ConnectionString="mongodb://admin:<YOUR_PASSWORD>@<LOCAL_IP>:27017/Minimarket?authSource=admin" \
+dotnet run --project Minimarket.API/Minimarket.API.csproj --environment=Production
