@@ -1,4 +1,5 @@
 .vs
+.dotnet
 Minimarket.API/bin
 Minimarket.API/obj
 Minimarket.Desktop/bin

@@ -13,7 +13,6 @@ Environment must include:
 
 - .NET Server Node
 - (Optional) MongoDB Node
-- Ignore Nginx — don’t need it for this setup.
 
 ### 2. Deploy .NET API
 
@@ -25,8 +24,6 @@ From Dewacloud:
 
 ### 3. Configure Kestrel to Listen on All Interfaces
 
-In Program.cs:
-
 ```csharp
 builder.WebHost.ConfigureKestrel(o =>
 {
@@ -34,37 +31,29 @@ builder.WebHost.ConfigureKestrel(o =>
 });
 ```
 
-Or via appsettings.json:
-
-```json
-{
-  "Kestrel": {
-    "Endpoints": {
-      "Http": {
-        "Url": "http://0.0.0.0:5241"
-      }
-    }
-  }
-}
-```
-
 This ensures the app is reachable internally.
 
 ### 4. Start the API
 
+```bash
+dotnet run --project Minimarket.API/Minimarket.API.csproj --environemt=Production
+```
+
 SSH into the .NET node:
 
+```bash
 curl http://localhost:5241/api/payment
+```
 
-If we get a response → good.
+If we get a response -> good.
 
 ### 5. Create a Public Endpoint for Port 5241
 
 In Dewacloud dashboard:
 
-Environment → Settings → Endpoints → Add Endpoint
+Environment >> Settings >> Endpoints >> Add Endpoint
 
-```
+```bash
 Internal Port: 5241
 Protocol: HTTP
 Public: Yes
@@ -94,22 +83,11 @@ Open: ```https://evangelion.user.cloudjkt02.com/api/payment```
 
 If it works → deployment is correct.
 
-### COMPLETE CHECKLIST (PRINT THIS)
+Run On MongoDB:
 
-This is the complete minimal setup:
+To get local Hostname and Local IP<br>:
+mongod@node76037-evangelion ```hostname -f```<br>
+mongod@node76037-evangelion ```hostname -I```
 
-1. Create environment with .NET node
-2. Deploy .NET API from GitHub
-3. Configure Kestrel → ListenAnyIP(5241)
-4. Run API → test on localhost:5241
-5. Create Endpoint → internal 5241 → public
-6. Bind domain → evangelion.user.cloudjkt02.com → .NET node
-7. Access API over HTTPS
-
-No need to:
-
-- configure Nginx
-- reload Nginx
-- open firewall manually
-- use systemctl
-- manage certs
+Database__ConnectionString="mongodb://admin:<YOUR_PASSWORD>@<LOCAL_IP>:27017/Minimarket?authSource=admin" \
+dotnet run --project Minimarket.API/Minimarket.API.csproj --environment=Production
