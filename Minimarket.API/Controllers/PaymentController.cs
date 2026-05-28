@@ -1,4 +1,4 @@
-using API.Models;
+using Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
