@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace API.Models
+namespace Core.Models
 {
     public class PaymentModel : BaseModel
     {
