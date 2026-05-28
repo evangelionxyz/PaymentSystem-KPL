@@ -1,10 +1,10 @@
 ﻿using System.Text.Json.Serialization;
+using System;
 
-namespace Core.Models
+namespace Minimarket.Core.Models;
+
+public class BaseModel
 {
-    public class BaseModel
-    {
-        [JsonPropertyName("id")]
-        public string Id { get; set; } = string.Empty;
-    }
+    [JsonPropertyName("id")]
+    public string ID { get; set; } = Guid.NewGuid().ToString();
 }
