@@ -1,23 +1,24 @@
-using Core.Models;
+using Minimarket.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers;
+namespace Minimarket.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 public class PaymentController : ControllerBase
 {
-    private static readonly List<PaymentModel> _staticTestData =
+    private static readonly Customer dummyCS = new() { FirstName = "Evangelion", LastName = "Manuhutu", Phone = "1234567890" };
+    private static readonly List<Payment> _staticTestData =
     [
-        new PaymentModel{Id = new Guid().ToString(), Username = "Test Name A" },
-        new PaymentModel{Id = new Guid().ToString(), Username = "Test Name B" },
-        new PaymentModel{Id = new Guid().ToString(), Username = "Test Name C" },
-        new PaymentModel{Id = new Guid().ToString(), Username = "Test Name D" },
-        new PaymentModel{Id = new Guid().ToString(), Username = "Test Name E" },
+        new Payment {
+            Date = DateTime.Now, 
+            Customer = dummyCS,
+            PaymentMethod = PaymentMethod.EWallet,
+        },
     ];
 
     [HttpGet]
-    public ActionResult<IEnumerable<PaymentModel>> GetAll()
+    public ActionResult<IEnumerable<Payment>> GetAll()
     {
         return Ok(_staticTestData);
     }
@@ -25,7 +26,7 @@ public class PaymentController : ControllerBase
     [HttpGet("{id}")]
     public ActionResult GetById(string id)
     {
-        var result = _staticTestData.Find(x => x.Id == id);
+        var result = _staticTestData.Find(x => x.ID == id);
         if (result == null)
             return NotFound();
         return Ok(result);
