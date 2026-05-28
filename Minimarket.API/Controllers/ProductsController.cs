@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Minimarket.API.Services;
 using Minimarket.Core.Models;
 
