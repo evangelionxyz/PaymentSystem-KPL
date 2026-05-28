@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System.Text.Json.Serialization;
 
 namespace Minimarket.Core.Models;
@@ -15,5 +16,14 @@ public class Product : BaseModel
 
     [BsonElement("price")]
     [JsonPropertyName("price")]
-    public int Price { get; set; } = 0;
+    public decimal Price { get; set; } = 0;
+
+    [BsonElement("categoryId")]
+    [BsonRepresentation(BsonType.ObjectId)]
+    [JsonPropertyName("categoryId")]
+    public string? CategoryId { get; set; }
+
+    [BsonElement("categoryName")]
+    [JsonPropertyName("categoryName")]
+    public string? CategoryName { get; set; }
 }

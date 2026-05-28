@@ -4,17 +4,20 @@ using MongoDB.Driver;
 
 namespace Minimarket.API.Services;
 
-public class CustomerService(IOptions<Settings> DatabaseSettings)
+public class CustomerService(IOptions<Settings> settings, IMongoClient client)
 {
-    private readonly IMongoCollection<Customer> _customerCollection = new MongoClient(DatabaseSettings.Value.ConnectionString)
-        .GetDatabase(DatabaseSettings.Value.DatabaseName)
-        .GetCollection<Customer>(DatabaseSettings.Value.CustomerCollectionName);
+    private readonly IMongoCollection<Customer> _customerCollection =
+        client.GetDatabase(settings.Value.DatabaseName)
+              .GetCollection<Customer>(settings.Value.CustomerCollectionName);
 
     public async Task<List<Customer>> GetAsync() => 
         await _customerCollection.Find(_ => true).ToListAsync();
 
     public async Task<Customer?> GetAsync(string id) => 
         await _customerCollection.Find(x => x.ID == id).FirstOrDefaultAsync();
+
+    public async Task<Customer?> GetByPhoneAsync(string phone) =>
+        await _customerCollection.Find(x => x.Phone == phone).FirstOrDefaultAsync();
 
     public async Task CreateAsync(Customer newCustomer) =>
         await _customerCollection.InsertOneAsync(newCustomer);

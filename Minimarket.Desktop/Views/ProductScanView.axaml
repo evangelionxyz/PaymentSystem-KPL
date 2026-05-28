@@ -1,0 +1,76 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Desktop.Avalonia.ViewModels"
+             x:Class="Desktop.Avalonia.Views.ProductScanView"
+             x:DataType="vm:ProductScanViewModel">
+
+  <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="20">
+
+    <!-- Header -->
+    <StackPanel Grid.Row="0" Margin="0,0,0,16">
+      <TextBlock Text="🛒 Product Scan" FontSize="22" FontWeight="Bold" Foreground="#E0E0E0"/>
+      <TextBlock Text="{Binding StatusMessage}" FontSize="12" Foreground="#9E9E9E" Margin="0,4,0,0"/>
+    </StackPanel>
+
+    <!-- FSM State Badge -->
+    <Border Grid.Row="1" Background="#1E3A5F" CornerRadius="6"
+            Padding="10,6" HorizontalAlignment="Left" Margin="0,0,0,14">
+      <TextBlock>
+        <Run Text="State: " Foreground="#9E9E9E"/>
+        <Run Text="{Binding FsmState}" Foreground="#64B5F6" FontWeight="SemiBold"/>
+      </TextBlock>
+    </Border>
+
+    <!-- Search Box + Results -->
+    <Grid Grid.Row="2" RowDefinitions="Auto,*">
+      <TextBox Grid.Row="0"
+               Watermark="🔍  Search by name or ID..."
+               Text="{Binding SearchText}"
+               Margin="0,0,0,10"
+               Padding="12,8"
+               FontSize="14"
+               Background="#1E1E2E"
+               Foreground="#E0E0E0"
+               BorderBrush="#3A3A5C"
+               CornerRadius="8"/>
+
+      <ListBox Grid.Row="1"
+               Name="ProductList"
+               ItemsSource="{Binding FilteredProducts}"
+               Background="#12121F"
+               BorderBrush="#2A2A4A"
+               CornerRadius="8">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <Grid ColumnDefinitions="*,Auto,Auto" Margin="8,6">
+              <StackPanel Grid.Column="0">
+                <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="Medium" Foreground="#E0E0E0"/>
+                <TextBlock Text="{Binding CategoryName}" FontSize="11" Foreground="#9E9E9E"/>
+              </StackPanel>
+              <TextBlock Grid.Column="1"
+                         Text="{Binding Price, StringFormat='Rp {0:N0}'}"
+                         FontSize="14" FontWeight="SemiBold"
+                         Foreground="#81C784" VerticalAlignment="Center" Margin="12,0"/>
+              <Button Grid.Column="2"
+                      Content="+ Add"
+                      Tag="{Binding}"
+                      Name="AddBtn"
+                      Background="#1565C0" Foreground="White"
+                      Padding="10,4" CornerRadius="6"/>
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Grid>
+
+    <!-- Footer nav -->
+    <Button Grid.Row="3"
+            Content="View Cart →"
+            HorizontalAlignment="Right"
+            Background="#1565C0" Foreground="White"
+            Padding="20,10" CornerRadius="8"
+            Margin="0,14,0,0"
+            Name="ViewCartButton"/>
+
+  </Grid>
+</UserControl>

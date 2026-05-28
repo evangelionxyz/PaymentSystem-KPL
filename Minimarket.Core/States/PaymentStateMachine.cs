@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using Minimarket.Core.States;
 
 namespace Minimarket.Core.States;
 
@@ -14,6 +12,12 @@ public enum PaymentState : uint
     Cancelled,
 }
 
-public class PaymentStateMachine : StateMachine
+/// <summary>
+/// Concrete FSM pre-configured with the default payment flow transitions.
+/// Extends TransactionFSM which replaced the old StateMachine stub.
+/// </summary>
+public class PaymentStateMachine : TransactionFSM
 {
+    public PaymentStateMachine(IEnumerable<MachineStateTransition> transitions)
+        : base(transitions) { }
 }

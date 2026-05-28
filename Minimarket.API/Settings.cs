@@ -11,4 +11,8 @@ public class Settings
     public string? PaymentCollectionName { get; set; } = null;
     public string? CartCollectionName { get; set; } = null;
     public string? ReceiptCollectionName { get; set; } = null;
+    public string? CategoryCollectionName { get; set; } = null;
+    public string? PricingRuleCollectionName { get; set; } = null;
+    public string? MachineStateCollectionName { get; set; } = null;
 }
+

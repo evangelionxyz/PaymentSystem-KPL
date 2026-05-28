@@ -9,55 +9,35 @@ namespace Minimarket.API.Controllers;
 public class PaymentController(PaymentService paymentService) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Payment>>> GetAll()
-    {
-        var payments = await paymentService.GetAsync();
-        return Ok(payments);
-    }
+    public async Task<ActionResult<IEnumerable<Payment>>> GetAll() =>
+        Ok(await paymentService.GetAsync());
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Payment>> GetById(string id)
     {
         var payment = await paymentService.GetAsync(id);
-        if (payment == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(payment);
+        return payment is null ? NotFound() : Ok(payment);
     }
 
+    // ── Business Endpoint — Task 7.3 ─────────────────────────────────────────
+
+    public record ProcessPaymentRequest(string CartId, PaymentMethod Method, string? CustomerId);
+
+    /// <summary>POST /api/payment — process payment, create receipt, return it.</summary>
     [HttpPost]
-    public async Task<ActionResult<Payment>> Create(Payment newPayment)
+    public async Task<ActionResult<Receipt>> Process([FromBody] ProcessPaymentRequest req)
     {
-        await paymentService.CreateAsync(newPayment);
-        return CreatedAtAction(nameof(GetById), new { id = newPayment.ID }, newPayment);
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(string id, Payment updatePayment)
-    {
-        var existingPayment = await paymentService.GetAsync(id);
-        if (existingPayment == null)
+        try
         {
-            return NotFound();
+            var receipt = await paymentService.ProcessAsync(req.CartId, req.Method, req.CustomerId);
+            return CreatedAtResult(receipt);
         }
-
-        updatePayment.ID = existingPayment.ID;
-        await paymentService.UpdateAsync(id, updatePayment);
-        return NoContent();
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(string id)
-    {
-        var existingPayment = await paymentService.GetAsync(id);
-        if (existingPayment == null)
+        catch (KeyNotFoundException ex)
         {
-            return NotFound();
+            return NotFound(ex.Message);
         }
-
-        await paymentService.RemoveAsync(id);
-        return NoContent();
     }
+
+    private CreatedResult CreatedAtResult(Receipt receipt) =>
+        Created($"/api/receipts/{receipt.ID}", receipt);
 }
