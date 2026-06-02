@@ -26,4 +26,8 @@ public class Product : BaseModel
     [BsonElement("categoryName")]
     [JsonPropertyName("categoryName")]
     public string? CategoryName { get; set; }
+
+    [BsonElement("stock")]
+    [JsonPropertyName("stock")]
+    public int Stock { get; set; } = 0;
 }

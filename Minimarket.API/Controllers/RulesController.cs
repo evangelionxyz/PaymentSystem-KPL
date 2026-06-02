@@ -10,9 +10,8 @@ namespace Minimarket.API.Controllers;
 /// GET /api/rules/tax      — returns current TaxSettings (from appsettings).
 /// </summary>
 [ApiController]
-[Route("api/rules")]
-public class RulesController(
-    PricingRuleService ruleService,
+[Route("api/[controller]")]
+public class RulesController(PricingRuleService ruleService,
     IOptions<TaxSettings> taxSettings) : ControllerBase
 {
     [HttpGet("pricing")]

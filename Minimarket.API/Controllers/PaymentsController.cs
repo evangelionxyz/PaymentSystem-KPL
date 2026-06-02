@@ -6,7 +6,7 @@ namespace Minimarket.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class PaymentController(PaymentService paymentService) : ControllerBase
+public class PaymentsController(PaymentService paymentService) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Payment>>> GetAll() =>
@@ -18,8 +18,6 @@ public class PaymentController(PaymentService paymentService) : ControllerBase
         var payment = await paymentService.GetAsync(id);
         return payment is null ? NotFound() : Ok(payment);
     }
-
-    // ── Business Endpoint — Task 7.3 ─────────────────────────────────────────
 
     public record ProcessPaymentRequest(string CartId, PaymentMethod Method, string? CustomerId);
 

@@ -4,11 +4,8 @@ using Minimarket.Core.States;
 
 namespace Minimarket.API.Controllers;
 
-/// <summary>
-/// GET /api/config/machine-states — returns all FSM transition rows from MongoDB.
-/// </summary>
 [ApiController]
-[Route("api/config")]
+[Route("api/[controller]")]
 public class ConfigController(MachineStateService stateService) : ControllerBase
 {
     [HttpGet("machine-states")]

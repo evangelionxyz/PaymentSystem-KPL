@@ -6,7 +6,7 @@ namespace Minimarket.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ReceiptController(ReceiptService receiptService) : ControllerBase
+public class ReceiptsController(ReceiptService receiptService) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Receipt>>> GetAll() =>

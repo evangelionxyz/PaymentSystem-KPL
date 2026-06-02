@@ -97,4 +97,13 @@ public class CartController(CartService cartService) : ControllerBase
             return NotFound(ex.Message);
         }
     }
+
+    /// <summary>GET /api/cart/pending — returns all checked-out but unpaid carts.</summary>
+    [HttpGet("pending")]
+    public async Task<ActionResult<IEnumerable<Cart>>> GetPending()
+    {
+        var all = await cartService.GetAsync();
+        var pending = all.Where(c => c.IsCheckedOut && !c.IsPaid && c.Items.Count > 0);
+        return Ok(pending);
+    }
 }

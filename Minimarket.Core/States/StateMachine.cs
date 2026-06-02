@@ -39,3 +39,27 @@ public class TransactionFSM
     public IEnumerable<MachineStateTransition> AvailableTransitions() =>
         _transitions.Where(t => t.From == CurrentState);
 }
+
+public class StateMachine<TState, TInput>
+{
+    private readonly Dictionary<(TState, TInput), TState> _rules;
+
+    public StateMachine(Dictionary<(TState, TInput), TState> rules)
+    {
+        _rules = rules ?? new Dictionary<(TState, TInput), TState>();
+    }
+
+    public TState MoveNext(TState current, TInput input)
+    {
+        if (_rules.TryGetValue((current, input), out var nextState))
+        {
+            return nextState;
+        }
+        throw new InvalidOperationException($"Invalid transition from state '{current}' with input '{input}'.");
+    }
+
+    public bool CanTransition(TState current, TInput input)
+    {
+        return _rules.ContainsKey((current, input));
+    }
+}

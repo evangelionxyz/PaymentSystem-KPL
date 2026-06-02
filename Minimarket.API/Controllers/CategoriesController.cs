@@ -6,7 +6,7 @@ namespace Minimarket.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CategoryController(CategoryService categoryService) : ControllerBase
+public class CategoriesController(CategoryService categoryService) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Category>>> GetAll()

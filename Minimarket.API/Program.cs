@@ -2,14 +2,13 @@ using Minimarket.API;
 using Minimarket.API.Services;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ── Database settings ──────────────────────────────────────────────────────
 builder.Services.Configure<Settings>(
     builder.Configuration.GetSection("Database"));
 
-// ── Runtime configuration (IOptions<T>) — Task 4.5 ───────────────────────
 builder.Services.Configure<PricingSettings>(
     builder.Configuration.GetSection("Pricing"));
 builder.Services.Configure<TaxSettings>(
@@ -17,16 +16,29 @@ builder.Services.Configure<TaxSettings>(
 builder.Services.Configure<PaymentFeeSettings>(
     builder.Configuration.GetSection("PaymentFees"));
 
-// ── Singleton MongoDB client ───────────────────────────────────────────────
 builder.Services.AddSingleton<IMongoClient>(sp =>
 {
     var settings = sp.GetRequiredService<IOptions<Settings>>().Value;
-    return new MongoClient(settings.ConnectionString);
+
+    // Resolve DB Connection Password
+    string? strCopy = settings.ConnectionString;
+    int atIdx = strCopy!.IndexOf('@');
+    string first = strCopy[..atIdx];
+    string second = strCopy[atIdx..];
+
+    StringBuilder connectionString = new();
+    connectionString.Append(first);
+    connectionString.Append(':');
+    connectionString.Append(settings.Password);
+    connectionString.Append(second);
+
+    return new MongoClient(connectionString.ToString());
 });
 
-// ── Core services — Task 6.6 ──────────────────────────────────────────────
 builder.Services.AddSingleton<CategoryService>();
 builder.Services.AddSingleton<CustomerService>();
+builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<AuditLogService>();
 builder.Services.AddSingleton<ProductService>();
 builder.Services.AddSingleton<ReceiptService>();
 builder.Services.AddSingleton<PricingRuleService>();
@@ -35,23 +47,20 @@ builder.Services.AddSingleton<CartService>();
 builder.Services.AddSingleton<PaymentService>();
 builder.Services.AddSingleton<DatabaseSeeder>();
 
-// ── ASP.NET Core ───────────────────────────────────────────────────────────
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// ── Seed database on startup — Task 5.4 ──────────────────────────────────
 using (var scope = app.Services.CreateScope())
 {
     var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
     await seeder.SeedPricingRulesAsync();
     await seeder.SeedMachineStatesAsync();
+    await seeder.SeedUsersAsync();
 }
 
-// ── Routes ────────────────────────────────────────────────────────────────
 app.MapGet("/", () => Results.Ok("Minimarket API is running."));
 
-// ── Pipeline ──────────────────────────────────────────────────────────────
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();

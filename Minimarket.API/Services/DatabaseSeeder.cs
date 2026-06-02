@@ -13,12 +13,14 @@ public class DatabaseSeeder
 {
     private readonly IMongoCollection<PricingRule> _rulesCollection;
     private readonly IMongoCollection<MachineStateTransition> _statesCollection;
+    private readonly IMongoCollection<User> _usersCollection;
 
     public DatabaseSeeder(IMongoClient client, IOptions<Settings> settings)
     {
         var db = client.GetDatabase(settings.Value.DatabaseName);
         _rulesCollection = db.GetCollection<PricingRule>(settings.Value.PricingRuleCollectionName);
         _statesCollection = db.GetCollection<MachineStateTransition>(settings.Value.MachineStateCollectionName);
+        _usersCollection = db.GetCollection<User>(settings.Value.UserCollectionName);
     }
 
     /// <summary>Inserts default pricing rules if the collection is empty.</summary>
@@ -68,5 +70,20 @@ public class DatabaseSeeder
         };
 
         await _statesCollection.InsertManyAsync(transitions);
+    }
+
+    /// <summary>Inserts default customer and cashier users if the collection is empty.</summary>
+    public async Task SeedUsersAsync()
+    {
+        if (await _usersCollection.CountDocumentsAsync(FilterDefinition<User>.Empty) > 0)
+            return;
+
+        var defaults = new List<User>
+        {
+            new() { Username = "customer", Password = "password" },
+            new() { Username = "cashier", Password = "password" }
+        };
+
+        await _usersCollection.InsertManyAsync(defaults);
     }
 }

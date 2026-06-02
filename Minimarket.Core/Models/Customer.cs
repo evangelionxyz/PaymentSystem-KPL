@@ -1,4 +1,4 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Attributes;
 using System.Text.Json.Serialization;
 
 namespace Minimarket.Core.Models;
@@ -16,4 +16,8 @@ public class Customer : BaseModel
     [BsonElement("phone")]
     [JsonPropertyName("phone")]
     public string Phone { get; set; } = string.Empty;
+
+    [BsonElement("isVip")]
+    [JsonPropertyName("isVip")]
+    public bool IsVip { get; set; } = false;
 }

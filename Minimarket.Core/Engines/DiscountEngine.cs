@@ -15,6 +15,8 @@ public class DiscountEngine : PricingEngine<DiscountRule>
     {
         Register("DiscountPercentage", ApplyDiscountPercentage);
         Register("BuyXGetY", ApplyBuyXGetY);
+        Register("TimeDiscount", ApplyTimeDiscount);
+        Register("VipDiscount", ApplyVipDiscount);
     }
 
     private static Cart ApplyDiscountPercentage(Cart cart, DiscountRule rule)
@@ -65,6 +67,66 @@ public class DiscountEngine : PricingEngine<DiscountRule>
             int freeUnits = freeSets * y + freeFromRemainder;
 
             item.DiscountAmount += Math.Round(item.UnitPrice * freeUnits, 2);
+        }
+
+        cart.DiscountAmount = cart.Items.Sum(i => i.DiscountAmount);
+        return cart;
+    }
+
+    private static Cart ApplyTimeDiscount(Cart cart, DiscountRule rule)
+    {
+        if (rule.Condition is null) return cart;
+
+        var parts = rule.Condition
+            .Split(',')
+            .Select(p => p.Split('='))
+            .Where(p => p.Length == 2)
+            .ToDictionary(p => p[0].Trim().ToLower(), p => p[1].Trim());
+
+        if (!parts.TryGetValue("starttime", out var startStr) || !parts.TryGetValue("endtime", out var endStr))
+            return cart;
+
+        if (!TimeSpan.TryParse(startStr, out var startTime) || !TimeSpan.TryParse(endStr, out var endTime))
+            return cart;
+
+        var nowTime = DateTime.Now.TimeOfDay;
+        bool inRange = nowTime >= startTime && nowTime <= endTime;
+
+        if (inRange)
+        {
+            foreach (var item in cart.Items)
+            {
+                bool matchesCategory = rule.CategoryId is not null && item.CategoryId == rule.CategoryId;
+                bool matchesProduct = rule.ProductId is not null && item.ProductId == rule.ProductId;
+                bool appliesToAll = rule.CategoryId is null && rule.ProductId is null;
+
+                if (matchesCategory || matchesProduct || appliesToAll)
+                {
+                    var discount = item.UnitPrice * item.Quantity * (rule.Value / 100m);
+                    item.DiscountAmount += Math.Round(discount, 2);
+                }
+            }
+        }
+
+        cart.DiscountAmount = cart.Items.Sum(i => i.DiscountAmount);
+        return cart;
+    }
+
+    private static Cart ApplyVipDiscount(Cart cart, DiscountRule rule)
+    {
+        if (!cart.IsVip) return cart;
+
+        foreach (var item in cart.Items)
+        {
+            bool matchesCategory = rule.CategoryId is not null && item.CategoryId == rule.CategoryId;
+            bool matchesProduct = rule.ProductId is not null && item.ProductId == rule.ProductId;
+            bool appliesToAll = rule.CategoryId is null && rule.ProductId is null;
+
+            if (matchesCategory || matchesProduct || appliesToAll)
+            {
+                var discount = item.UnitPrice * item.Quantity * (rule.Value / 100m);
+                item.DiscountAmount += Math.Round(discount, 2);
+            }
         }
 
         cart.DiscountAmount = cart.Items.Sum(i => i.DiscountAmount);

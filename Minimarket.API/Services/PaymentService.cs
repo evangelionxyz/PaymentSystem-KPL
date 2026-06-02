@@ -39,10 +39,10 @@ public class PaymentService(
     {
         var cart = await cartService.CheckoutAsync(cartId);
 
-        // Apply payment fee from runtime config.
+        // Apply payment fee from runtime config and payment plugins.
         var feeKey = method.ToString();
         var feeRate = feeSettings.Value.Fees.TryGetValue(feeKey, out var rate) ? rate : 0m;
-        var feeAmount = Math.Round(cart.Total * feeRate, 2);
+        var feeAmount = Math.Round(PaymentCalculator.Calculate(method, cart.Total, feeRate), 2);
         var finalTotal = cart.Total + feeAmount;
 
         // Persist payment record.
@@ -53,6 +53,9 @@ public class PaymentService(
             Customer      = customerId is not null ? new Customer { ID = customerId } : null,
         };
         await _payments.InsertOneAsync(payment);
+
+        cart.IsPaid = true;
+        await cartService.UpdateAsync(cartId, cart);
 
         // Create receipt.
         var receipt = new Receipt

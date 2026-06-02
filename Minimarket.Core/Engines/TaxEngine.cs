@@ -13,6 +13,7 @@ public class TaxEngine : PricingEngine<TaxRule>
     public TaxEngine(ILogger<TaxEngine>? logger = null) : base(logger)
     {
         Register("TaxRate", ApplyTaxRate);
+        Register("ServiceFee", ApplyServiceFee);
     }
 
     private static Cart ApplyTaxRate(Cart cart, TaxRule rule)
@@ -21,6 +22,27 @@ public class TaxEngine : PricingEngine<TaxRule>
         {
             var taxableAmount = item.LineTotal; // post-discount
             cart.TaxAmount += Math.Round(taxableAmount * rule.Rate, 2);
+        }
+        return cart;
+    }
+
+    private static Cart ApplyServiceFee(Cart cart, TaxRule rule)
+    {
+        foreach (var item in cart.Items)
+        {
+            bool matchesCategory = string.IsNullOrEmpty(rule.CategoryId) || item.CategoryId == rule.CategoryId;
+            if (!matchesCategory) continue;
+
+            decimal fee = 0;
+            if (rule.Condition == "Flat")
+            {
+                fee = rule.Rate * item.Quantity;
+            }
+            else
+            {
+                fee = item.LineTotal * rule.Rate;
+            }
+            cart.TaxAmount += Math.Round(fee, 2);
         }
         return cart;
     }

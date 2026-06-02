@@ -37,4 +37,12 @@ public class Cart : BaseModel
     [BsonElement("isCheckedOut")]
     [JsonPropertyName("isCheckedOut")]
     public bool IsCheckedOut { get; set; } = false;
+
+    [BsonElement("isPaid")]
+    [JsonPropertyName("isPaid")]
+    public bool IsPaid { get; set; } = false;
+
+    [BsonElement("isVip")]
+    [JsonPropertyName("isVip")]
+    public bool IsVip { get; set; } = false;
 }
