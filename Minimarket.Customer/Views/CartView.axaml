@@ -8,7 +8,7 @@
 
     <!-- Header -->
     <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="12" Margin="0,0,0,16">
-      <TextBlock Text="🛍 Cart" FontSize="22" FontWeight="Bold" Foreground="#E0E0E0"
+      <TextBlock Text="Cart" FontSize="22" FontWeight="Bold" Foreground="#E0E0E0"
                  VerticalAlignment="Center"/>
       <Border Background="#1E3A5F" CornerRadius="6" Padding="8,4">
         <TextBlock>

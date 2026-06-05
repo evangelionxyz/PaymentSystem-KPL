@@ -15,7 +15,14 @@ public class CartViewModel : INotifyPropertyChanged
     private TransactionFSM _fsm;
 
     // Stable cart ID for this session — resets on New Transaction.
-    public string CartId { get; private set; } = Guid.NewGuid().ToString();
+    public string CartId { get; set; } = Guid.NewGuid().ToString();
+
+    private bool _isVip;
+    public bool IsVip
+    {
+        get => _isVip;
+        set { _isVip = value; OnPropertyChanged(); }
+    }
 
     public ObservableCollection<CartItem> Items { get; } = new();
 
@@ -35,8 +42,9 @@ public class CartViewModel : INotifyPropertyChanged
         _fsm   = cache.CreateFsm();
     }
 
-    // ── FSM ───────────────────────────────────────────────────────────────────
-
+    // ======================================
+    // FSM
+    // ======================================
     public void TriggerFsm(string trigger)
     {
         _fsm.Trigger(trigger);
@@ -44,8 +52,9 @@ public class CartViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(FsmState));
     }
 
-    // ── Cart Operations ───────────────────────────────────────────────────────
-
+    // ======================================
+    // Cart Operations
+    // ======================================
     public async Task AddItemAsync(Product product)
     {
         try
@@ -116,7 +125,7 @@ public class CartViewModel : INotifyPropertyChanged
 
     private Cart BuildLocalCart()
     {
-        var c = new Cart { ID = CartId };
+        var c = new Cart { ID = CartId, IsVip = IsVip };
         foreach (var i in Items) c.Items.Add(i);
         return c;
     }

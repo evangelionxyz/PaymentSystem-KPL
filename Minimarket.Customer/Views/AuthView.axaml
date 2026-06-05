@@ -1,0 +1,85 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Desktop.Avalonia.ViewModels"
+             x:Class="Desktop.Avalonia.Views.AuthView"
+             x:DataType="vm:AuthViewModel">
+
+  <Border Background="{ DynamicResource Brush.DarkBrown }"
+          CornerRadius="16" 
+          Padding="30" 
+          Margin="40"
+          HorizontalAlignment="Center" 
+          VerticalAlignment="Center" 
+          Width="400">
+    <StackPanel Spacing="18">
+      
+      <!-- Title -->
+      <TextBlock Text="{Binding TitleText}" 
+                 FontSize="24" 
+                 FontWeight="Bold" 
+                 Foreground="{DynamicResource Brush.Light}" 
+                 HorizontalAlignment="Center"/>
+      
+      <!-- Error / Success messages -->
+      <TextBlock Text="{Binding ErrorMessage}"
+                 Foreground="{DynamicResource Brush.Danger}"
+                 FontSize="13" 
+                 TextWrapping="Wrap"
+                 HorizontalAlignment="Center"
+                 IsVisible="{Binding ErrorMessage,
+                 Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+      <TextBlock Text="{Binding SuccessMessage}"
+                 Foreground="{DynamicResource Brush.Good}"
+                 FontSize="13" 
+                 TextWrapping="Wrap" 
+                 HorizontalAlignment="Center"
+                 IsVisible="{Binding SuccessMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+      <!-- Input Fields -->
+      <StackPanel Spacing="8">
+        <TextBlock Text="Username" 
+                   Foreground="{DynamicResource Brush.Light}" 
+                   FontSize="12"/>
+        <TextBox Text="{Binding Username, Mode=TwoWay}"
+                PlaceholderText="Enter username"
+                Background="{DynamicResource Brush.LightBrown}" 
+                BorderBrush="{DynamicResource Brush.Light}" 
+                Foreground="{DynamicResource Brush.Light}"
+                Padding="10"
+                CornerRadius="6"/>
+      </StackPanel>
+
+      <StackPanel Spacing="8">
+        <TextBlock Text="Password"
+                   Foreground="{DynamicResource Brush.Light}"
+                   FontSize="12"/>
+        <TextBox Text="{Binding Password, Mode=TwoWay}"
+                 PasswordChar="*"
+                 PlaceholderText="Enter password"
+                 Background="{DynamicResource Brush.LightBrown}"
+                 BorderBrush="{DynamicResource Brush.Light}"
+                 Foreground="{DynamicResource Brush.Light}"
+                 Padding="10" CornerRadius="6"/>
+      </StackPanel>
+
+      <!-- Action Buttons -->
+      <Button Content="{Binding ActionButtonText}"
+              Name="AuthActionButton"
+              Background="{DynamicResource Brush.Accent}"
+              Foreground="{DynamicResource Brush.Brown}"
+              FontWeight="Bold" FontSize="15"
+              Padding="12"
+              CornerRadius="8"
+              HorizontalAlignment="Stretch"
+              HorizontalContentAlignment="Center"/>
+
+      <Button Content="{Binding SwitchButtonText}"
+              Name="SwitchModeButton"
+              Background="Transparent"
+              BorderThickness="0"
+              Foreground="{DynamicResource Brush.Light}"
+              FontSize="12"
+              HorizontalAlignment="Center" Cursor="Hand"/>
+    </StackPanel>
+  </Border>
+</UserControl>

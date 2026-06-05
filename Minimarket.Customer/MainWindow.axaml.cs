@@ -15,6 +15,8 @@ public partial class MainWindow : Window
     private CartView        _cartPage = null!;
     private PaymentView     _payPage  = null!;
     private ReceiptView     _rcptPage = null!;
+    private AuthView        _authPage = null!;
+    private Grid            _mainPOSGrid = null!;
 
     public MainWindow()
     {
@@ -30,6 +32,14 @@ public partial class MainWindow : Window
         _cartPage = this.FindControl<CartView>("CartPage")!;
         _payPage  = this.FindControl<PaymentView>("PaymentPage")!;
         _rcptPage = this.FindControl<ReceiptView>("ReceiptPage")!;
+        _authPage = this.FindControl<AuthView>("AuthPage")!;
+        _mainPOSGrid = this.FindControl<Grid>("MainPOSGrid")!;
+
+        _authPage.AuthCompleted += (sender, args) =>
+        {
+            _authPage.IsVisible = false;
+            _mainPOSGrid.IsVisible = true;
+        };
 
         // Hide offline banner if connected
         this.FindControl<Border>("OfflineBanner")!.IsVisible = false;

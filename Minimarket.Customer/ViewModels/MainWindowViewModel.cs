@@ -1,8 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Desktop.Avalonia.Services;
-using Desktop.Avalonia.ViewModels;
-using Minimarket.Core.Models;
 
 namespace Desktop.Avalonia.ViewModels;
 
@@ -17,6 +15,9 @@ public class MainWindowViewModel : INotifyPropertyChanged
     public CartViewModel CartVm { get; }
     public PaymentViewModel PaymentVm { get; }
     public ReceiptViewModel ReceiptVm { get; }
+    public AuthViewModel AuthVm { get; }
+
+    public bool IsAuthenticated => AuthVm.AuthenticatedUser != null;
 
     private AppPage _currentPage = AppPage.ProductScan;
     public AppPage CurrentPage
@@ -47,6 +48,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         Api   = new ApiClient();
         Cache = new PricingConfigCache(Api);
 
+        AuthVm        = new AuthViewModel(Api);
         CartVm        = new CartViewModel(Api, Cache);
         ProductScanVm = new ProductScanViewModel(Api, Cache, CartVm);
         PaymentVm     = new PaymentViewModel(Api, CartVm, new Dictionary<string, decimal>
@@ -55,6 +57,19 @@ public class MainWindowViewModel : INotifyPropertyChanged
             ["QRIS"] = 0.007m, ["CreditCard"] = 0.015m,
         });
         ReceiptVm = new ReceiptViewModel(CartVm);
+
+        AuthVm.PropertyChanged += (s, e) =>
+        {
+            if (e.PropertyName == nameof(AuthVm.AuthenticatedUser))
+            {
+                OnPropertyChanged(nameof(IsAuthenticated));
+                if (IsAuthenticated)
+                {
+                    CartVm.CartId = Guid.NewGuid().ToString();
+                    CartVm.IsVip = AuthVm.Username.EndsWith("vip", StringComparison.OrdinalIgnoreCase);
+                }
+            }
+        };
     }
 
     public async Task InitializeAsync()
@@ -64,8 +79,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(ConnectivityBanner));
     }
 
-    // ── Navigation ────────────────────────────────────────────────────────────
-
+    // Navigation
     public void GoToProductScan()  => CurrentPage = AppPage.ProductScan;
     public void GoToCart()         => CurrentPage = AppPage.Cart;
 

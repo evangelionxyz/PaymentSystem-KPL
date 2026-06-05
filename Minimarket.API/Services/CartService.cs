@@ -2,7 +2,6 @@ using Minimarket.Core.Engines;
 using Minimarket.Core.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using Microsoft.Extensions.Logging;
 
 namespace Minimarket.API.Services;
 

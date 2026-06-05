@@ -1,0 +1,28 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Desktop.Avalonia.App"
+             RequestedThemeVariant="Default">
+    <Application.Styles>
+        <FluentTheme />
+    </Application.Styles>
+
+    <Application.Resources>
+        <Color x:Key="Color.Black">#000000</Color>
+        <Color x:Key="Color.DarkBrown">#1F150C</Color>
+        <Color x:Key="Color.Brown">#412D15</Color>
+        <Color x:Key="Color.LightBrown">#F1CDA5</Color>
+        <Color x:Key="Color.Light">#E1DCC9</Color>
+        <Color x:Key="Color.Accent">#FFB74D</Color>
+        <Color x:Key="Color.Danger">#FF3131</Color>
+        <Color x:Key="Color.Good">#81C784</Color>
+
+        <SolidColorBrush x:Key="Brush.Black" Color="{StaticResource Color.Black}" />
+        <SolidColorBrush x:Key="Brush.DarkBrown" Color="{StaticResource Color.DarkBrown}" />
+        <SolidColorBrush x:Key="Brush.Brown" Color="{StaticResource Color.Brown}" />
+        <SolidColorBrush x:Key="Brush.Light" Color="{StaticResource Color.Light}" />
+        <SolidColorBrush x:Key="Brush.Accent" Color="{StaticResource Color.Accent}" />
+        <SolidColorBrush x:Key="Brush.Danger" Color="{StaticResource Color.Danger}" />
+        <SolidColorBrush x:Key="Brush.Good" Color="{StaticResource Color.Good}" />
+
+    </Application.Resources>
+</Application>

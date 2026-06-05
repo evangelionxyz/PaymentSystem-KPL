@@ -12,4 +12,8 @@ public class User : BaseModel
     [BsonElement("password")]
     [JsonPropertyName("password")]
     public string Password { get; set; } = string.Empty;
+
+    [BsonElement("role")]
+    [JsonPropertyName("role")]
+    public string Role { get; set; } = string.Empty;
 }

@@ -1,0 +1,1 @@
+[{"ruleType":"DiscountPercentage","productId":null,"categoryId":null,"condition":"CategoryName=Snack","value":10,"priority":1,"id":"6a19c5195c7529656c37f436"},{"ruleType":"BuyXGetY","productId":null,"categoryId":null,"condition":"X=2,Y=1","value":0,"priority":2,"id":"6a19c5195c7529656c37f437"}]
