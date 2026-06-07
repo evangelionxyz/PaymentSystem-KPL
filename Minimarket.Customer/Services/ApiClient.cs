@@ -12,7 +12,7 @@ namespace Desktop.Avalonia.Services;
 public class ApiClient
 {
     private readonly HttpClient _http;
-    public const string BaseUrl = "https://localhost:5241";
+    public const string BaseUrl = "https://evangelion.user.cloudjkt02.com/";
 
     public ApiClient()
     {

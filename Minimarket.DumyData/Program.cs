@@ -15,13 +15,13 @@ var client = new MongoClient(connectionString);
 var db = client.GetDatabase(dbName);
 
 // Get Collections
-var categoryColl = db.GetCollection<Category>("category");
-var customerColl = db.GetCollection<Customer>("customer");
-var productColl = db.GetCollection<Product>("product");
-var cartColl = db.GetCollection<Cart>("cart");
+var categoryColl = db.GetCollection<Category>("categories");
+var customerColl = db.GetCollection<Customer>("customers");
+var productColl = db.GetCollection<Product>("products");
+var cartColl = db.GetCollection<Cart>("carts");
 var pricingRulesColl = db.GetCollection<PricingRule>("pricingRules");
-var paymentColl = db.GetCollection<Payment>("payment");
-var receiptColl = db.GetCollection<Receipt>("receipt");
+var paymentColl = db.GetCollection<Payment>("payments");
+var receiptColl = db.GetCollection<Receipt>("receipts");
 
 // 1. Seed Categories (15+ items)
 Console.WriteLine("Seeding Categories...");

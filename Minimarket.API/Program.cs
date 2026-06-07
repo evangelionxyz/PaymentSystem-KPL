@@ -31,7 +31,7 @@ builder.Services.AddSingleton<IMongoClient>(sp =>
     connectionString.Append(':');
     connectionString.Append(settings.Password);
     connectionString.Append(second);
-
+    Console.WriteLine($"\nDatabase Connection:\n\t{connectionString.ToString()}\n");
     return new MongoClient(connectionString.ToString());
 });
 
