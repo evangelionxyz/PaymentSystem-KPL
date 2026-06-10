@@ -1,5 +1,4 @@
 using MongoDB.Bson.Serialization.Attributes;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Minimarket.Core.Models;
@@ -41,8 +40,4 @@ public class Cart : BaseModel
     [BsonElement("isPaid")]
     [JsonPropertyName("isPaid")]
     public bool IsPaid { get; set; } = false;
-
-    [BsonElement("isVip")]
-    [JsonPropertyName("isVip")]
-    public bool IsVip { get; set; } = false;
 }

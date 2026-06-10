@@ -84,6 +84,13 @@ public class ApiClient
         return await res.Content.ReadFromJsonAsync<Cart>();
     }
 
+    public async Task<Cart?> GetCartById(string cartId)
+    {
+        var res = await _http!.GetAsync($"/api/cart/{cartId}");
+        res.EnsureSuccessStatusCode();
+        return await res.Content.ReadFromJsonAsync<Cart>();
+    }
+
 
     // ===========================
     //     Payment

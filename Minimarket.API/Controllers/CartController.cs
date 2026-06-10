@@ -8,11 +8,8 @@ namespace Minimarket.API.Controllers;
 [Route("api/[controller]")]
 public class CartController(CartService cartService) : ControllerBase
 {
-    // ── Existing CRUD ─────────────────────────────────────────────────────────
-
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Cart>>> GetAll() =>
-        Ok(await cartService.GetAsync());
+    public async Task<ActionResult<IEnumerable<Cart>>> GetAll() => Ok(await cartService.GetAsync());
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Cart>> GetById(string id)
@@ -47,8 +44,7 @@ public class CartController(CartService cartService) : ControllerBase
         return NoContent();
     }
 
-    // ── Business Endpoints (Task 7.2) ─────────────────────────────────────────
-
+    // Business Endpoints (Task 7.2)
     public record AddItemRequest(string CartId, string ProductId, int Quantity);
     public record RemoveItemRequest(string CartId, string ProductId);
     public record CheckoutRequest(string CartId);
