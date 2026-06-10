@@ -9,8 +9,7 @@ namespace Minimarket.API.Controllers;
 public class PaymentsController(PaymentService paymentService) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Payment>>> GetAll() =>
-        Ok(await paymentService.GetAsync());
+    public async Task<ActionResult<IEnumerable<Payment>>> GetAll() => Ok(await paymentService.GetAsync());
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Payment>> GetById(string id)
@@ -36,6 +35,5 @@ public class PaymentsController(PaymentService paymentService) : ControllerBase
         }
     }
 
-    private CreatedResult CreatedAtResult(Receipt receipt) =>
-        Created($"/api/receipts/{receipt.ID}", receipt);
+    private CreatedResult CreatedAtResult(Receipt receipt) => Created($"/api/receipts/{receipt.ID}", receipt);
 }

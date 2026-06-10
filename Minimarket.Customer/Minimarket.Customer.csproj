@@ -27,4 +27,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Minimarket.Core\Minimarket.Core.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="runtimeConfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

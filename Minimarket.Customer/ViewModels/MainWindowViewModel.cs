@@ -4,13 +4,18 @@ using Desktop.Avalonia.Services;
 
 namespace Desktop.Avalonia.ViewModels;
 
-public enum AppPage { ProductScan, Cart, Payment, Receipt }
+public enum AppPage
+{ 
+    ProductScan, 
+    Cart, 
+    Payment, 
+    Receipt
+}
 
 public class MainWindowViewModel : INotifyPropertyChanged
 {
     public ApiClient Api { get; }
     public PricingConfigCache Cache { get; }
-
     public ProductScanViewModel ProductScanVm { get; }
     public CartViewModel CartVm { get; }
     public PaymentViewModel PaymentVm { get; }
@@ -39,9 +44,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     public bool IsPayment     => CurrentPage == AppPage.Payment;
     public bool IsReceipt     => CurrentPage == AppPage.Receipt;
 
-    public string ConnectivityBanner => Cache.IsConnected
-        ? string.Empty
-        : "⚠ API offline — operating with base prices only";
+    public string ConnectivityBanner => Cache.IsConnected ? string.Empty : "API offline — operating with base prices only";
 
     public MainWindowViewModel()
     {
@@ -106,6 +109,5 @@ public class MainWindowViewModel : INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
-    protected void OnPropertyChanged([CallerMemberName] string? name = null) =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    protected void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }

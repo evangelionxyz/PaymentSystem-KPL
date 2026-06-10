@@ -53,8 +53,6 @@ public partial class MainWindow : Window
         ShowPage(AppPage.ProductScan);
     }
 
-    // ── Navigation ────────────────────────────────────────────────────────────
-
     private void ShowPage(AppPage page)
     {
         _scanPage.IsVisible = page == AppPage.ProductScan;
@@ -62,8 +60,6 @@ public partial class MainWindow : Window
         _payPage.IsVisible  = page == AppPage.Payment;
         _rcptPage.IsVisible = page == AppPage.Receipt;
     }
-
-    // ── Button Wiring ─────────────────────────────────────────────────────────
 
     private void WireButtons()
     {
