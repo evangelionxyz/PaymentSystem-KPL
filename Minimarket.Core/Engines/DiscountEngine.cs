@@ -114,8 +114,6 @@ public class DiscountEngine : PricingEngine<DiscountRule>
 
     private static Cart ApplyVipDiscount(Cart cart, DiscountRule rule)
     {
-        if (!cart.IsVip) return cart;
-
         foreach (var item in cart.Items)
         {
             bool matchesCategory = rule.CategoryId is not null && item.CategoryId == rule.CategoryId;

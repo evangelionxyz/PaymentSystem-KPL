@@ -126,7 +126,7 @@ public class CartViewModel : INotifyPropertyChanged
 
     private Cart BuildLocalCart()
     {
-        var c = new Cart { ID = CartId, IsVip = IsVip };
+        var c = new Cart { ID = CartId };
         foreach (var i in Items) c.Items.Add(i);
         return c;
     }
