@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace Minimarket.Core.Models;
 
 public class PaymentConfig

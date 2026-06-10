@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Minimarket.Customer.Services;
+namespace Minimarket.Core.Services;
 
 public class RuntimeConfig
 {

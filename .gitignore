@@ -12,8 +12,9 @@ Minimarket.API.Test/bin
 Minimarket.API.Test/obj
 Minimarket.DumyData/bin
 Minimarket.DumyData/obj
+
+openspec
 .agent
 .codex
-openspec
 .github/prompts
 .github/skills

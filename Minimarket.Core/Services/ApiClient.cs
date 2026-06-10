@@ -1,10 +1,9 @@
 using Minimarket.Core.Models;
 using Minimarket.Core.States;
-using Minimarket.Customer.Services;
 using System.Diagnostics;
 using System.Net.Http.Json;
 
-namespace Desktop.Avalonia.Services;
+namespace Minimarket.Core.Services;
 
 public class ApiClient
 {

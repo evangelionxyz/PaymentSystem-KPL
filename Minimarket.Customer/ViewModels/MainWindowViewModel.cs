@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Desktop.Avalonia.Services;
+using Minimarket.Core.Services;
 
 namespace Desktop.Avalonia.ViewModels;
 

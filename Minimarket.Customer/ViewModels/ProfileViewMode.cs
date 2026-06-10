@@ -1,4 +1,4 @@
-﻿using Desktop.Avalonia.Services;
+﻿using Minimarket.Core.Services;
 using Minimarket.Core.Models;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;

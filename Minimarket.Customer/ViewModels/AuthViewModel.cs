@@ -1,8 +1,7 @@
-using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Minimarket.Core.Models;
-using Desktop.Avalonia.Services;
+using Minimarket.Core.Services;
 
 namespace Desktop.Avalonia.ViewModels;
 

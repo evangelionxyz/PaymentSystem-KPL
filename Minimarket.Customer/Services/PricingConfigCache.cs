@@ -1,5 +1,6 @@
 using Minimarket.Core.Models;
 using Minimarket.Core.States;
+using Minimarket.Core.Services;
 
 namespace Desktop.Avalonia.Services;
 

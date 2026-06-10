@@ -2,6 +2,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Minimarket.Core.Models;
+using Minimarket.Core.Services;
+
 using Desktop.Avalonia.Services;
 
 namespace Desktop.Avalonia.ViewModels;
