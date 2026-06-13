@@ -12,26 +12,12 @@ public class CartService(
     PricingRuleService ruleService,
     ILogger<CartService> logger)
 {
-    private readonly IMongoCollection<Cart> _carts =
-        client.GetDatabase(settings.Value.DatabaseName)
-              .GetCollection<Cart>(settings.Value.CartCollectionName);
-
-    public async Task<List<Cart>> GetAsync() =>
-        await _carts.Find(_ => true).ToListAsync();
-
-    public async Task<Cart?> GetAsync(string id) =>
-        await _carts.Find(c => c.ID == id).FirstOrDefaultAsync();
-
-    public async Task CreateAsync(Cart cart) =>
-        await _carts.InsertOneAsync(cart);
-
-    public async Task UpdateAsync(string id, Cart cart) =>
-        await _carts.ReplaceOneAsync(c => c.ID == id, cart);
-
-    public async Task RemoveAsync(string id) =>
-        await _carts.DeleteOneAsync(c => c.ID == id);
-
-    // ── Business Logic ────────────────────────────────────────────────────────
+    private readonly IMongoCollection<Cart> _carts = client.GetDatabase(settings.Value.DatabaseName).GetCollection<Cart>(settings.Value.CartCollectionName);
+    public async Task<List<Cart>> GetAsync() => await _carts.Find(_ => true).ToListAsync();
+    public async Task<Cart?> GetAsync(string id) => await _carts.Find(c => c.ID == id).FirstOrDefaultAsync();
+    public async Task CreateAsync(Cart cart) => await _carts.InsertOneAsync(cart);
+    public async Task UpdateAsync(string id, Cart cart) => await _carts.ReplaceOneAsync(c => c.ID == id, cart);
+    public async Task RemoveAsync(string id) => await _carts.DeleteOneAsync(c => c.ID == id);
 
     /// <summary>Adds qty units of productId to the cart, creating it if needed.</summary>
     public async Task<Cart> AddItemAsync(string cartId, string productId, int quantity)

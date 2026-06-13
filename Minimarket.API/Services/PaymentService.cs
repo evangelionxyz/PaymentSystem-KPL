@@ -11,30 +11,14 @@ public class PaymentService(
     CartService cartService,
     ReceiptService receiptService)
 {
-    private readonly IMongoCollection<Payment> _payments =
-        client.GetDatabase(settings.Value.DatabaseName)
-              .GetCollection<Payment>(settings.Value.PaymentCollectionName);
+    private readonly IMongoCollection<Payment> _payments = client.GetDatabase(settings.Value.DatabaseName).GetCollection<Payment>(settings.Value.PaymentCollectionName);
 
-    // ── Basic CRUD ─────────────────────────────────────────────────────────────
+    public async Task<List<Payment>> GetAsync() => await _payments.Find(_ => true).ToListAsync();
 
-    public async Task<List<Payment>> GetAsync() =>
-        await _payments.Find(_ => true).ToListAsync();
+    public async Task<Payment?> GetAsync(string id) => await _payments.Find(x => x.ID == id).FirstOrDefaultAsync();
 
-    public async Task<Payment?> GetAsync(string id) =>
-        await _payments.Find(x => x.ID == id).FirstOrDefaultAsync();
+    public async Task CreateAsync(Payment payment) => await _payments.InsertOneAsync(payment);
 
-    public async Task CreateAsync(Payment payment) =>
-        await _payments.InsertOneAsync(payment);
-
-    // ── Business Logic ─────────────────────────────────────────────────────────
-
-    /// <summary>
-    /// Processes payment for a checked-out cart:
-    ///  1. Loads the cart (must be checked out).
-    ///  2. Applies the payment method fee from PaymentFeeSettings.
-    ///  3. Creates a Payment record and a Receipt in MongoDB.
-    ///  4. Returns the completed Receipt.
-    /// </summary>
     public async Task<Receipt> ProcessAsync(string cartId, PaymentMethod method, string? customerId)
     {
         var cart = await cartService.CheckoutAsync(cartId);
