@@ -5,12 +5,7 @@ using MongoDB.Driver;
 
 namespace Minimarket.API.Services;
 
-public class CartService(
-    IOptions<Settings> settings,
-    IMongoClient client,
-    ProductService productService,
-    PricingRuleService ruleService,
-    ILogger<CartService> logger)
+public class CartService(IOptions<Settings> settings, IMongoClient client, ProductService productService, PricingRuleService ruleService)
 {
     private readonly IMongoCollection<Cart> _carts = client.GetDatabase(settings.Value.DatabaseName).GetCollection<Cart>(settings.Value.CartCollectionName);
     public async Task<List<Cart>> GetAsync() => await _carts.Find(_ => true).ToListAsync();

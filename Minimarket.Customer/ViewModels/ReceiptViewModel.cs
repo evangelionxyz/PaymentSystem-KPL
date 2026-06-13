@@ -25,7 +25,8 @@ public class ReceiptViewModel : INotifyPropertyChanged
 
     public string ItemsDisplay => _receipt is null ? string.Empty :
         string.Join("\n", _receipt.Items.Select(i =>
-            $"  {i.ProductName} x{i.Quantity}  @ {i.UnitPrice:N0}  = {i.LineTotal:N0}"));
+            $"  {i.ProductName} x{i.Quantity}  @ {i.UnitPrice:N0}  = {i.LineTotal:N0}")
+        );
 
     public ReceiptViewModel(CartViewModel cartVm)
     {
@@ -46,6 +47,5 @@ public class ReceiptViewModel : INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
-    protected void OnPropertyChanged([CallerMemberName] string? name = null) =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    protected void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }

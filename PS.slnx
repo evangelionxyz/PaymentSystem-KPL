@@ -5,6 +5,5 @@
     <Project Path="Minimarket.Core/Minimarket.Core.csproj" Id="876a3a60-40d0-4e2d-b43f-7bf077a0a4c6" />
     <Project Path="Minimarket.DumyData/Minimarket.DumyData.csproj" Id="85fdd1e6-5d2e-430f-be28-fa6c7c71ea82" />
   </Folder>
-  <Project Path="Minimarket.Admin/Minimarket.Admin.csproj" />
   <Project Path="Minimarket.Customer/Minimarket.Customer.csproj" />
 </Solution>

@@ -5,16 +5,12 @@ using MongoDB.Driver;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddOpenApi();
 
-builder.Services.Configure<Settings>(
-    builder.Configuration.GetSection("Database"));
-
-builder.Services.Configure<PricingSettings>(
-    builder.Configuration.GetSection("Pricing"));
-builder.Services.Configure<TaxSettings>(
-    builder.Configuration.GetSection("Tax"));
-builder.Services.Configure<PaymentFeeSettings>(
-    builder.Configuration.GetSection("PaymentFees"));
+builder.Services.Configure<Settings>(builder.Configuration.GetSection("Database"));
+builder.Services.Configure<PricingSettings>(builder.Configuration.GetSection("Pricing"));
+builder.Services.Configure<TaxSettings>(builder.Configuration.GetSection("Tax"));
+builder.Services.Configure<PaymentFeeSettings>(builder.Configuration.GetSection("PaymentFees"));
 
 builder.Services.AddSingleton<IMongoClient>(sp =>
 {
@@ -48,9 +44,10 @@ builder.Services.AddSingleton<PaymentService>();
 builder.Services.AddSingleton<DatabaseSeeder>();
 
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
 using (var scope = app.Services.CreateScope())
 {
     var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
@@ -64,5 +61,8 @@ app.MapGet("/", () => Results.Ok("Minimarket API is running."));
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+app.MapOpenApi();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.Run();

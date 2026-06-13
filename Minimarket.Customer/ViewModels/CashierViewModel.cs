@@ -10,13 +10,10 @@ namespace Desktop.Avalonia.ViewModels;
 public class CashierViewModel : INotifyPropertyChanged
 {
     private readonly ApiClient _api;
-    
     public AuthViewModel AuthVm { get; }
-
     public ObservableCollection<Cart> PendingCarts { get; } = new();
     public ObservableCollection<Product> Products { get; } = new();
     public ObservableCollection<AuditLog> AuditLogs { get; } = new();
-
     private Cart? _selectedCart;
     public Cart? SelectedCart
     {
@@ -98,12 +95,6 @@ public class CashierViewModel : INotifyPropertyChanged
             Trigger = trigger
         };
 
-        // Advance state
-        // Transition table rules:
-        // AwaitingPayment -> ProcessingPayment (Pay_Cash or Pay_QR)
-        // ProcessingPayment -> Completed (Success)
-        // ProcessingPayment -> AwaitingPayment (Fail)
-        // Scanning -> Cancelled (Cancel)
         if (CurrentState == TransactionState.AwaitingPayment && (trigger == "Pay_Cash" || trigger == "Pay_QR"))
         {
             CurrentState = TransactionState.ProcessingPayment;
@@ -160,6 +151,5 @@ public class CashierViewModel : INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
-    protected void OnPropertyChanged([CallerMemberName] string? name = null) =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    protected void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }

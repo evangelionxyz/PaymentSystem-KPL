@@ -90,7 +90,6 @@ public class MainWindowViewModel : INotifyPropertyChanged
     // Navigation
     public void GoToProductScan()  => CurrentPage = AppPage.ProductList;
     public void GoToCart() => CurrentPage = AppPage.Cart;
-
     public void GoToPayment()
     {
         CartVm.TriggerFsm("CartConfirmed");

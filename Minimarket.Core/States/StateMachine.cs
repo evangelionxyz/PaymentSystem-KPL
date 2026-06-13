@@ -29,8 +29,7 @@ public class TransactionFSM
                  string.Equals(t.Trigger, trigger, StringComparison.OrdinalIgnoreCase));
 
         if (match is null)
-            throw new InvalidOperationException(
-                $"TransactionFSM: trigger '{trigger}' is not allowed from state '{CurrentState}'.");
+            throw new InvalidOperationException($"TransactionFSM: trigger '{trigger}' is not allowed from state '{CurrentState}'.");
 
         CurrentState = match.To;
     }

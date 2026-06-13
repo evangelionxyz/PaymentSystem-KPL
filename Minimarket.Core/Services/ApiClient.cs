@@ -13,7 +13,6 @@ public class ApiClient
     public ApiClient(string? configFilename = null)
     {
         _config = RuntimeConfig.Load(configFilename ?? "runtimeConfig.json");
-
         try
         {
             var handler = new HttpClientHandler

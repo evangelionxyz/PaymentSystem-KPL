@@ -54,11 +54,11 @@ public class ProductListViewModel : INotifyPropertyChanged
             FilterProducts();
             StatusMessage = _cache.IsConnected
                 ? $"Loaded {_allProducts.Count} products."
-                : "⚠ API offline — using cached rules, no discounts.";
+                : "API offline — using cached rules, no discounts.";
         }
         catch
         {
-            StatusMessage = "⚠ Could not load products from API.";
+            StatusMessage = "Could not load products from API.";
         }
     }
 

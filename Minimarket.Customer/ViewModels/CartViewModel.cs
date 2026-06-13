@@ -20,7 +20,6 @@ public class CartViewModel : INotifyPropertyChanged
     // Stable cart ID for this session — must be a valid MongoDB ObjectId (24-char hex).
     // Using ObjectId.GenerateNewId() instead of Guid to satisfy BsonRepresentation(ObjectId).
     public string CartId { get; set; } = ObjectId.GenerateNewId().ToString();
-
     private bool _isVip;
     public bool IsVip
     {

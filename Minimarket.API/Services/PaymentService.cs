@@ -4,15 +4,9 @@ using MongoDB.Driver;
 
 namespace Minimarket.API.Services;
 
-public class PaymentService(
-    IOptions<Settings> settings,
-    IOptions<PaymentFeeSettings> feeSettings,
-    IMongoClient client,
-    CartService cartService,
-    ReceiptService receiptService)
+public class PaymentService(IOptions<Settings> settings, IOptions<PaymentFeeSettings> feeSettings, IMongoClient client, CartService cartService, ReceiptService receiptService)
 {
     private readonly IMongoCollection<Payment> _payments = client.GetDatabase(settings.Value.DatabaseName).GetCollection<Payment>(settings.Value.PaymentCollectionName);
-
     public async Task<List<Payment>> GetAsync() => await _payments.Find(_ => true).ToListAsync();
 
     public async Task<Payment?> GetAsync(string id) => await _payments.Find(x => x.ID == id).FirstOrDefaultAsync();
