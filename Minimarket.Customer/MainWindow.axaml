@@ -1,0 +1,83 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Desktop.Avalonia.ViewModels"
+        xmlns:views="clr-namespace:Desktop.Avalonia.Views"
+        x:Class="Desktop.Avalonia.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Minimarket POS"
+        Width="1280" Height="720"
+        Background="{DynamicResource Brush.Light}">
+
+  <Grid RowDefinitions="Auto,Auto,*">
+
+    <!-- Title Bar -->
+    <Border Grid.Row="0" 
+            Background="{DynamicResource Brush.Black}" 
+            Padding="20,14">
+
+      <Grid ColumnDefinitions="Auto,*,auto">
+        <TextBlock Grid.Column="0" 
+                   Text="Minimarket"
+                   FontSize="18" 
+                   FontWeight="Bold" 
+                   Foreground="{DynamicResource Brush.Light}"
+                   VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="1"
+                   Text="Minimarket Payment System"
+                   Foreground="{DynamicResource Brush.Light}"
+                   FontSize="13"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="2" 
+                   Name="ConnectivityText"
+                   Text="{Binding ConnectivityBanner}"
+                   Foreground="{DynamicResource Brush.Accent}" 
+                   FontSize="12"
+                   VerticalAlignment="Center"/>
+      </Grid>
+    </Border>
+
+    <!-- Connectivity warning bar -->
+    <Border Grid.Row="1"
+            Background="{DynamicResource Brush.Danger}"
+            Padding="12,6"
+            Name="OfflineBanner">
+      <TextBlock
+        Text="{Binding ConnectivityBanner}"
+        Foreground="{DynamicResource Brush.Accent}"
+        FontSize="13"/>
+    </Border>
+
+    <!-- Page Content — visibility toggled from code-behind -->
+    <Grid Grid.Row="2">
+      <!-- Auth Screen -->
+      <views:AuthView DataContext="{Binding AuthVm}"
+                      Name="AuthPage"
+                      IsVisible="True"/>
+
+      <!-- Main POS view content (hidden until authenticated) -->
+      <Grid Name="MainPOSGrid" IsVisible="False" RowDefinitions="*,100">
+        <Grid Grid.Row="0">
+          <views:ProductListView DataContext="{Binding ProductListVm}"
+                                 Name="ProductListPage"/>
+          <views:CartView DataContext="{Binding CartVm}"
+                          Name="CartPage"
+                          IsVisible="True"/>
+          <views:PaymentView DataContext="{Binding PaymentVm}"
+                             Name="PaymentPage"
+                             IsVisible="True"/>
+          <views:ReceiptView DataContext="{Binding ReceiptVm}"
+                             Name="ReceiptPage"
+                             IsVisible="True"/>
+        </Grid>
+        
+        <!-- Live State Visualization -->
+        <views:FsmVisualizationView Grid.Row="1"
+                                    CurrentState="{Binding CartVm.FsmState}"
+                                    Height="300"
+                                    Margin="10,0,10,10"/>
+      </Grid>
+    </Grid>
+
+  </Grid>
+</Window>

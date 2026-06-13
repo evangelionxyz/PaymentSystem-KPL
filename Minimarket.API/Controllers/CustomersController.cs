@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Minimarket.API.Services;
 using Minimarket.Core.Models;
 
@@ -6,7 +6,7 @@ namespace Minimarket.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CustomerController(CustomerService customerService) : ControllerBase
+public class CustomersController(CustomerService customerService) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Customer>>> GetAll()
@@ -30,6 +30,17 @@ public class CustomerController(CustomerService customerService) : ControllerBas
     [HttpPost]
     public async Task<ActionResult<Customer>> Create(Customer newCustomer)
     {
+        if (string.IsNullOrWhiteSpace(newCustomer.Phone))
+        {
+            return BadRequest("Customer phone cannot be empty.");
+        }
+
+        var existing = await customerService.GetByPhoneAsync(newCustomer.Phone);
+        if (existing != null)
+        {
+            return Conflict($"Customer with phone number '{newCustomer.Phone}' already exists.");
+        }
+
         await customerService.CreateAsync(newCustomer);
         return CreatedAtAction(nameof(GetById), new { id = newCustomer.ID }, newCustomer);
     }
@@ -41,6 +52,17 @@ public class CustomerController(CustomerService customerService) : ControllerBas
         if (existingCustomer == null)
         {
             return NotFound();
+        }
+
+        if (string.IsNullOrWhiteSpace(updateCustomer.Phone))
+        {
+            return BadRequest("Customer phone cannot be empty.");
+        }
+
+        var duplicate = await customerService.GetByPhoneAsync(updateCustomer.Phone);
+        if (duplicate != null && duplicate.ID != id)
+        {
+            return Conflict($"Customer with phone number '{updateCustomer.Phone}' already exists.");
         }
 
         updateCustomer.ID = existingCustomer.ID;

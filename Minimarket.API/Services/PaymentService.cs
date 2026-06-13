@@ -4,24 +4,51 @@ using MongoDB.Driver;
 
 namespace Minimarket.API.Services;
 
-public class PaymentService(IOptions<Settings> databaseSettings)
+public class PaymentService(IOptions<Settings> settings, IOptions<PaymentFeeSettings> feeSettings, IMongoClient client, CartService cartService, ReceiptService receiptService)
 {
-    private readonly IMongoCollection<Payment> _paymentCollection = new MongoClient(databaseSettings.Value.ConnectionString)
-        .GetDatabase(databaseSettings.Value.DatabaseName)
-        .GetCollection<Payment>(databaseSettings.Value.PaymentCollectionName);
+    private readonly IMongoCollection<Payment> _payments = client.GetDatabase(settings.Value.DatabaseName).GetCollection<Payment>(settings.Value.PaymentCollectionName);
+    public async Task<List<Payment>> GetAsync() => await _payments.Find(_ => true).ToListAsync();
 
-    public async Task<List<Payment>> GetAsync() =>
-        await _paymentCollection.Find(_ => true).ToListAsync();
+    public async Task<Payment?> GetAsync(string id) => await _payments.Find(x => x.ID == id).FirstOrDefaultAsync();
 
-    public async Task<Payment?> GetAsync(string id) =>
-        await _paymentCollection.Find(x => x.ID == id).FirstOrDefaultAsync();
+    public async Task CreateAsync(Payment payment) => await _payments.InsertOneAsync(payment);
 
-    public async Task CreateAsync(Payment newPayment) =>
-        await _paymentCollection.InsertOneAsync(newPayment);
+    public async Task<Receipt> ProcessAsync(string cartId, PaymentMethod method, string? customerId)
+    {
+        var cart = await cartService.CheckoutAsync(cartId);
 
-    public async Task UpdateAsync(string id, Payment updatePayment) =>
-        await _paymentCollection.ReplaceOneAsync(x => x.ID == id, updatePayment);
+        // Apply payment fee from runtime config and payment plugins.
+        var feeKey = method.ToString();
+        var feeRate = feeSettings.Value.Fees.TryGetValue(feeKey, out var rate) ? rate : 0m;
+        var feeAmount = Math.Round(PaymentCalculator.Calculate(method, cart.Total, feeRate), 2);
+        var finalTotal = cart.Total + feeAmount;
 
-    public async Task RemoveAsync(string id) =>
-        await _paymentCollection.DeleteOneAsync(x => x.ID == id);
+        // Persist payment record.
+        var payment = new Payment
+        {
+            Date          = DateTime.UtcNow,
+            PaymentMethod = method,
+            Customer      = customerId is not null ? new Customer { ID = customerId } : null,
+        };
+        await _payments.InsertOneAsync(payment);
+
+        cart.IsPaid = true;
+        await cartService.UpdateAsync(cartId, cart);
+
+        // Create receipt.
+        var receipt = new Receipt
+        {
+            CustomerId     = customerId,
+            Items          = cart.Items,
+            Subtotal       = cart.Subtotal,
+            DiscountAmount = cart.DiscountAmount,
+            TaxAmount      = cart.TaxAmount,
+            FeeAmount      = feeAmount,
+            Total          = finalTotal,
+            PaymentMethod  = method,
+            Date           = payment.Date,
+        };
+        await receiptService.CreateAsync(receipt);
+        return receipt;
+    }
 }

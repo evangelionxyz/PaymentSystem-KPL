@@ -1,0 +1,81 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Desktop.Avalonia.ViewModels"
+             x:Class="Desktop.Avalonia.Views.PaymentView"
+             x:DataType="vm:PaymentViewModel">
+
+  <Grid RowDefinitions="Auto,*,Auto" Margin="20">
+
+    <TextBlock Grid.Row="0" Text="Select Payment Method"
+               FontSize="22" FontWeight="Bold"
+               Foreground="{DynamicResource Brush.DarkBrown}"
+               Margin="0,0,0,20"/>
+
+    <ScrollViewer Grid.Row="1">
+      <StackPanel Spacing="10">
+
+        <!-- Payment Method List -->
+        <ListBox Name="MethodList"
+                 ItemsSource="{Binding PaymentMethods}"
+                 Background="Transparent"
+                 BorderThickness="0">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <Border Background="{DynamicResource Brush.LightBrown}"
+                      CornerRadius="8" Padding="16,12" Margin="0,4">
+                <TextBlock Text="{Binding}" FontSize="14"
+                           Foreground="{DynamicResource Brush.DarkBrown}"
+                           FontWeight="Medium"/>
+              </Border>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!-- Fee Preview -->
+        <Border Background="{DynamicResource Brush.LightBrown}"
+                CornerRadius="8" Padding="16" Margin="0,16,0,0">
+          <StackPanel Spacing="8">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="Payment Fee"
+                         Foreground="{DynamicResource Brush.Accent}"/>
+              <TextBlock Grid.Column="1"
+                         Text="{Binding FeeAmount, StringFormat='+ Rp {0:N0}'}"
+                         Foreground="{DynamicResource Brush.Accent}"/>
+            </Grid>
+            <Rectangle Height="1"
+                       Fill="{DynamicResource Brush.Brown}"
+                       Opacity="0.3"/>
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="Final Total"
+                         FontWeight="Bold"
+                         FontSize="16"
+                         Foreground="{DynamicResource Brush.DarkBrown}"/>
+              <TextBlock Grid.Column="1"
+                         Text="{Binding FinalTotal, StringFormat='Rp {0:N0}'}"
+                         FontWeight="Bold" FontSize="16"
+                         Foreground="{DynamicResource Brush.Good}"/>
+            </Grid>
+          </StackPanel>
+        </Border>
+
+        <TextBlock Text="{Binding ErrorMessage}"
+                   Foreground="{DynamicResource Brush.Danger}"
+                   FontSize="13"
+                   Margin="0,8,0,0"/>
+      </StackPanel>
+    </ScrollViewer>
+
+    <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="0,16,0,0">
+      <Button Grid.Column="0" Content="← Back to Cart" Name="BackButton"
+              Background="{DynamicResource Brush.Brown}"
+              Foreground="{DynamicResource Brush.Light}"
+              Padding="16,10" CornerRadius="8" HorizontalAlignment="Left"/>
+      <Button Grid.Column="1" Content="Pay Now →" Name="PayButton"
+              Background="{DynamicResource Brush.Accent}"
+              Foreground="{DynamicResource Brush.DarkBrown}"
+              FontWeight="SemiBold" FontSize="15"
+              Padding="24,12" CornerRadius="8"/>
+    </Grid>
+
+  </Grid>
+</UserControl>

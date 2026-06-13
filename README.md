@@ -22,18 +22,9 @@ From Dewacloud:
 - Deploy from GitHub (Auto deploy)
 - Build the project
 
-### 3. Configure Kestrel to Listen on All Interfaces
-
-```csharp
-builder.WebHost.ConfigureKestrel(o =>
-{
-    o.ListenAnyIP(5241);
-});
-```
-
 This ensures the app is reachable internally.
 
-### 4. Start the API
+### 3. Start the API
 
 ```bash
 dotnet run --project Minimarket.API/Minimarket.API.csproj --environemt=Production
@@ -47,7 +38,7 @@ curl http://localhost:5241/api/payment
 
 If we get a response -> good.
 
-### 5. Create a Public Endpoint for Port 5241
+### 4. Create a Public Endpoint for Port 5241
 
 In Dewacloud dashboard:
 
@@ -65,7 +56,7 @@ Example:
 
 This exposes API to the external Jelastic proxy.
 
-### 6. Bind Domain to the .NET Node
+### 5. Bind Domain to the .NET Node
 
 Environment → Settings → Custom Domains
 
@@ -77,7 +68,7 @@ Port 5241 (via endpoint above)
 
 HTTPS is automatically handled by Dewacloud (Let’s Encrypt).
 
-### 8. Test Public URL
+### 6. Test Public URL
 
 Open: ```https://evangelion.user.cloudjkt02.com/api/payment```
 
@@ -88,6 +79,3 @@ Run On MongoDB:
 To get local Hostname and Local IP<br>:
 mongod@node76037-evangelion ```hostname -f```<br>
 mongod@node76037-evangelion ```hostname -I```
-
-Database__ConnectionString="mongodb://admin:<YOUR_PASSWORD>@<LOCAL_IP>:27017/Minimarket?authSource=admin" \
-dotnet run --project Minimarket.API/Minimarket.API.csproj --environment=Production

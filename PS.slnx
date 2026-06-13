@@ -1,5 +1,9 @@
 <Solution>
-  <Project Path="Minimarket.API/Minimarket.API.csproj" />
-  <Project Path="Minimarket.Desktop/Minimarket.Desktop.csproj" Id="b6b34dc5-4d87-4b37-b980-5860a6a5f23d" />
-  <Project Path="Minimarket.Core/Minimarket.Core.csproj" Id="876a3a60-40d0-4e2d-b43f-7bf077a0a4c6" />
+  <Folder Name="/API/">
+    <Project Path="Minimarket.API.Test/Minimarket.API.Test.csproj" Id="405d071e-19e9-4db6-955d-72f9fd2b1538" />
+    <Project Path="Minimarket.API/Minimarket.API.csproj" />
+    <Project Path="Minimarket.Core/Minimarket.Core.csproj" Id="876a3a60-40d0-4e2d-b43f-7bf077a0a4c6" />
+    <Project Path="Minimarket.DumyData/Minimarket.DumyData.csproj" Id="85fdd1e6-5d2e-430f-be28-fa6c7c71ea82" />
+  </Folder>
+  <Project Path="Minimarket.Customer/Minimarket.Customer.csproj" />
 </Solution>

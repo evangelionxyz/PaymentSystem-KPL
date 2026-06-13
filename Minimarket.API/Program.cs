@@ -1,52 +1,68 @@
 using Minimarket.API;
 using Minimarket.API.Services;
 using Microsoft.Extensions.Options;
-using MongoDB.Bson;
 using MongoDB.Driver;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddOpenApi();
 
-builder.Services.Configure<Settings>(
-    builder.Configuration.GetSection("Database")
-);
+builder.Services.Configure<Settings>(builder.Configuration.GetSection("Database"));
+builder.Services.Configure<PricingSettings>(builder.Configuration.GetSection("Pricing"));
+builder.Services.Configure<TaxSettings>(builder.Configuration.GetSection("Tax"));
+builder.Services.Configure<PaymentFeeSettings>(builder.Configuration.GetSection("PaymentFees"));
 
-builder.Services.AddSingleton<CustomerService>();
-builder.Services.AddSingleton<ProductService>();
-builder.Services.AddSingleton<PaymentService>();
-builder.Services.AddSingleton<CartService>();
-builder.Services.AddSingleton<ReceiptService>();
-
-// Register MongoDB client using configuration.
 builder.Services.AddSingleton<IMongoClient>(sp =>
 {
     var settings = sp.GetRequiredService<IOptions<Settings>>().Value;
-    return new MongoClient(settings.ConnectionString);
+
+    // Resolve DB Connection Password
+    string? strCopy = settings.ConnectionString;
+    int atIdx = strCopy!.IndexOf('@');
+    string first = strCopy[..atIdx];
+    string second = strCopy[atIdx..];
+
+    StringBuilder connectionString = new();
+    connectionString.Append(first);
+    connectionString.Append(':');
+    connectionString.Append(settings.Password);
+    connectionString.Append(second);
+    Console.WriteLine($"\nDatabase Connection:\n\t{connectionString.ToString()}\n");
+    return new MongoClient(connectionString.ToString());
 });
 
-// Add services to the container.
+builder.Services.AddSingleton<CategoryService>();
+builder.Services.AddSingleton<CustomerService>();
+builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<AuditLogService>();
+builder.Services.AddSingleton<ProductService>();
+builder.Services.AddSingleton<ReceiptService>();
+builder.Services.AddSingleton<PricingRuleService>();
+builder.Services.AddSingleton<MachineStateService>();
+builder.Services.AddSingleton<CartService>();
+builder.Services.AddSingleton<PaymentService>();
+builder.Services.AddSingleton<DatabaseSeeder>();
+
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-app.MapGet("/", async () => {
-    return Results.Ok("Server is running...");
-});
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
+    await seeder.SeedPricingRulesAsync();
+    await seeder.SeedMachineStatesAsync();
+    await seeder.SeedUsersAsync();
+}
 
-app.MapGet("/test-mongo", async (IMongoClient client) => {
-    try {
-        // The "ping" command is the best way to test connectivity
-        var result = await client.GetDatabase("admin")
-            .RunCommandAsync<BsonDocument>(new BsonDocument("ping", 1));
-        // Serialize BSON to JSON to avoid type-casting issues in the response.
-        return Results.Ok(new { status = "OK", result = result.ToJson() });
-    }
-    catch (Exception ex) {
-        return Results.Problem(ex.ToString());
-    }
-});
+app.MapGet("/", () => Results.Ok("Minimarket API is running."));
 
-// Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+app.MapOpenApi();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.Run();

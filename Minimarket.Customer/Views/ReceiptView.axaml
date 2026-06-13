@@ -1,0 +1,93 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Desktop.Avalonia.ViewModels"
+             x:Class="Desktop.Avalonia.Views.ReceiptView"
+             x:DataType="vm:ReceiptViewModel">
+
+  <ScrollViewer Margin="20">
+    <StackPanel Spacing="16" MaxWidth="600" HorizontalAlignment="Center">
+
+      <!-- Header -->
+      <TextBlock Text="Receipt" FontSize="26" FontWeight="Bold"
+                 Foreground="{DynamicResource Brush.DarkBrown}"
+                 HorizontalAlignment="Center"/>
+
+      <!-- Receipt Card -->
+      <Border Background="{DynamicResource Brush.LightBrown}"
+              CornerRadius="12" Padding="24"
+              IsVisible="{Binding HasReceipt}">
+        <StackPanel Spacing="12">
+
+          <!-- Store / Date -->
+          <TextBlock Text="Minimarket POS"
+                     FontSize="18" FontWeight="SemiBold"
+                     Foreground="{DynamicResource Brush.Brown}"
+                     HorizontalAlignment="Center"/>
+          <TextBlock Text="{Binding Receipt.Date, StringFormat='{}{0:dd MMM yyyy  HH:mm}'}"
+                     FontSize="12"
+                     Foreground="{DynamicResource Brush.DarkBrown}"
+                     HorizontalAlignment="Center"/>
+
+          <Separator Background="{DynamicResource Brush.Brown}" Margin="0,8" Opacity="0.4"/>
+
+          <!-- Items -->
+          <TextBlock Text="{Binding ItemsDisplay}"
+                     FontFamily="Consolas, Monospace"
+                     FontSize="13"
+                     Foreground="{DynamicResource Brush.DarkBrown}"/>
+
+          <Separator Background="{DynamicResource Brush.Brown}" Margin="0,8" Opacity="0.4"/>
+
+          <!-- Totals -->
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Text="Subtotal"       Foreground="{DynamicResource Brush.Brown}"/>
+            <TextBlock Grid.Column="1" Text="{Binding Receipt.Subtotal,       StringFormat='Rp {0:N0}'}" Foreground="{DynamicResource Brush.DarkBrown}"/>
+          </Grid>
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Text="Discount"       Foreground="{DynamicResource Brush.Danger}"/>
+            <TextBlock Grid.Column="1" Text="{Binding Receipt.DiscountAmount, StringFormat='- Rp {0:N0}'}" Foreground="{DynamicResource Brush.Danger}"/>
+          </Grid>
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Text="Tax"            Foreground="{DynamicResource Brush.Brown}"/>
+            <TextBlock Grid.Column="1" Text="{Binding Receipt.TaxAmount,      StringFormat='+ Rp {0:N0}'}" Foreground="{DynamicResource Brush.Brown}"/>
+          </Grid>
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Text="Payment Fee"    Foreground="{DynamicResource Brush.Accent}"/>
+            <TextBlock Grid.Column="1" Text="{Binding Receipt.FeeAmount,      StringFormat='+ Rp {0:N0}'}" Foreground="{DynamicResource Brush.Accent}"/>
+          </Grid>
+
+          <Separator Background="{DynamicResource Brush.Brown}" Opacity="0.4"/>
+
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Text="TOTAL" FontWeight="Bold" FontSize="18" Foreground="{DynamicResource Brush.DarkBrown}"/>
+            <TextBlock Grid.Column="1" Text="{Binding Receipt.Total, StringFormat='Rp {0:N0}'}"
+                       FontWeight="Bold" FontSize="18"
+                       Foreground="{DynamicResource Brush.Good}"/>
+          </Grid>
+
+          <Separator Background="{DynamicResource Brush.Brown}" Margin="0,8" Opacity="0.4"/>
+
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Text="Payment Method" Foreground="{DynamicResource Brush.Brown}"/>
+            <TextBlock Grid.Column="1" Text="{Binding Receipt.PaymentMethod}" Foreground="{DynamicResource Brush.DarkBrown}"/>
+          </Grid>
+
+          <TextBlock Text="Thank you for shopping!"
+                     FontSize="14"
+                     Foreground="{DynamicResource Brush.Brown}"
+                     HorizontalAlignment="Center" Margin="0,16,0,0"/>
+        </StackPanel>
+      </Border>
+
+      <!-- New Transaction Button -->
+      <Button Content="🔄 New Transaction"
+              Name="NewTransactionButton"
+              Background="{DynamicResource Brush.Accent}"
+              Foreground="{DynamicResource Brush.DarkBrown}"
+              FontSize="15" FontWeight="SemiBold"
+              Padding="24,12" CornerRadius="8"
+              HorizontalAlignment="Center"/>
+
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

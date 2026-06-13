@@ -1,0 +1,85 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Desktop.Avalonia.ViewModels"
+             x:Class="Desktop.Avalonia.Views.ProductListView"
+             x:DataType="vm:ProductListViewModel">
+
+  <Grid RowDefinitions="Auto,*,Auto" Margin="20">
+
+    <!-- Header -->
+    <StackPanel Grid.Row="0" Margin="0,0,0,16">
+      <TextBlock Text="Products"
+                 FontSize="22"
+                 FontWeight="Bold"
+                 Foreground="{DynamicResource Brush.DarkBrown}"/>
+      <TextBlock Text="{Binding StatusMessage}"
+                 FontSize="12"
+                 Foreground="{DynamicResource Brush.DarkBrown}"
+                 Margin="0,4,0,0"/>
+    </StackPanel>
+
+    <!-- Search Box + Results -->
+    <Grid Grid.Row="1" RowDefinitions="Auto,*">
+      <TextBox Grid.Row="0"
+               PlaceholderText="Search by name or ID..."
+               Text="{Binding SearchText}"
+               Margin="0,0,0,10"
+               Padding="12,8"
+               FontSize="14"
+               Background="{DynamicResource Brush.LightBrown}"
+               BorderBrush="{DynamicResource Brush.Light}"
+               Foreground="{DynamicResource Brush.Light}"
+               CornerRadius="8"/>
+
+      <ListBox Grid.Row="1"
+               Name="ProductList"
+               ItemsSource="{Binding FilteredProducts}"
+               Background="{DynamicResource Brush.Light}"
+               BorderBrush="{DynamicResource Brush.Brown}"
+               BorderThickness="1"
+               CornerRadius="8">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <Grid ColumnDefinitions="*,Auto,Auto" Margin="8,6">
+              <StackPanel Grid.Column="0">
+                <TextBlock Text="{Binding Name}"
+                           FontSize="14"
+                           FontWeight="Medium"
+                           Foreground="{DynamicResource Brush.DarkBrown}"/>
+                <TextBlock Text="{Binding CategoryName}"
+                           FontSize="11"
+                           Foreground="{DynamicResource Brush.Brown}"/>
+              </StackPanel>
+              <TextBlock Grid.Column="1"
+                         Text="{Binding Price, StringFormat='Rp {0:N0}'}"
+                         FontSize="14" FontWeight="SemiBold"
+                         Foreground="{DynamicResource Brush.Good}"
+                         VerticalAlignment="Center" Margin="12,0"/>
+              <Button Grid.Column="2"
+                      Content="+ Add"
+                      Tag="{Binding}"
+                      Name="AddBtn"
+                      Background="{DynamicResource Brush.Accent}"
+                      Foreground="{DynamicResource Brush.DarkBrown}"
+                      FontWeight="SemiBold"
+                      Padding="10,4"
+                      CornerRadius="6"/>
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Grid>
+
+    <!-- Footer nav -->
+    <Button Grid.Row="2"
+            Content="View Cart →"
+            HorizontalAlignment="Right"
+            Background="{DynamicResource Brush.Accent}"
+            Foreground="{DynamicResource Brush.DarkBrown}"
+            FontWeight="SemiBold"
+            Padding="20,10"
+            CornerRadius="8"
+            Margin="0,14,0,0"
+            Name="ViewCartButton"/>
+  </Grid>
+</UserControl>
