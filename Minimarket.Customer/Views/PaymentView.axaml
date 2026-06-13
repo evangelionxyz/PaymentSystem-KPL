@@ -6,55 +6,73 @@
 
   <Grid RowDefinitions="Auto,*,Auto" Margin="20">
 
-    <TextBlock Grid.Row="0" Text="💳 Select Payment Method"
-               FontSize="22" FontWeight="Bold" Foreground="#E0E0E0" Margin="0,0,0,20"/>
+    <TextBlock Grid.Row="0" Text="Select Payment Method"
+               FontSize="22" FontWeight="Bold"
+               Foreground="{DynamicResource Brush.DarkBrown}"
+               Margin="0,0,0,20"/>
 
     <ScrollViewer Grid.Row="1">
       <StackPanel Spacing="10">
 
-        <!-- Payment Method Buttons (using ListBox for simple selection) -->
+        <!-- Payment Method List -->
         <ListBox Name="MethodList"
                  ItemsSource="{Binding PaymentMethods}"
                  Background="Transparent"
                  BorderThickness="0">
           <ListBox.ItemTemplate>
             <DataTemplate>
-              <Border Background="#1A1A2E" CornerRadius="8" Padding="16,12" Margin="0,4">
-                <TextBlock Text="{Binding}" FontSize="14" Foreground="#E0E0E0"/>
+              <Border Background="{DynamicResource Brush.LightBrown}"
+                      CornerRadius="8" Padding="16,12" Margin="0,4">
+                <TextBlock Text="{Binding}" FontSize="14"
+                           Foreground="{DynamicResource Brush.DarkBrown}"
+                           FontWeight="Medium"/>
               </Border>
             </DataTemplate>
           </ListBox.ItemTemplate>
         </ListBox>
 
         <!-- Fee Preview -->
-        <Border Background="#1A1A2E" CornerRadius="8" Padding="16" Margin="0,16,0,0">
+        <Border Background="{DynamicResource Brush.LightBrown}"
+                CornerRadius="8" Padding="16" Margin="0,16,0,0">
           <StackPanel Spacing="8">
             <Grid ColumnDefinitions="*,Auto">
-              <TextBlock Text="Payment Fee" Foreground="#FFB74D"/>
-              <TextBlock Grid.Column="1" Text="{Binding FeeAmount, StringFormat='+ Rp {0:N0}'}"
-                         Foreground="#FFB74D"/>
+              <TextBlock Text="Payment Fee"
+                         Foreground="{DynamicResource Brush.Accent}"/>
+              <TextBlock Grid.Column="1"
+                         Text="{Binding FeeAmount, StringFormat='+ Rp {0:N0}'}"
+                         Foreground="{DynamicResource Brush.Accent}"/>
             </Grid>
-            <Rectangle Height="1" Fill="#2A2A4A"/>
+            <Rectangle Height="1"
+                       Fill="{DynamicResource Brush.Brown}"
+                       Opacity="0.3"/>
             <Grid ColumnDefinitions="*,Auto">
-              <TextBlock Text="Final Total" FontWeight="Bold" FontSize="16" Foreground="#E0E0E0"/>
-              <TextBlock Grid.Column="1" Text="{Binding FinalTotal, StringFormat='Rp {0:N0}'}"
-                         FontWeight="Bold" FontSize="16" Foreground="#81C784"/>
+              <TextBlock Text="Final Total"
+                         FontWeight="Bold"
+                         FontSize="16"
+                         Foreground="{DynamicResource Brush.DarkBrown}"/>
+              <TextBlock Grid.Column="1"
+                         Text="{Binding FinalTotal, StringFormat='Rp {0:N0}'}"
+                         FontWeight="Bold" FontSize="16"
+                         Foreground="{DynamicResource Brush.Good}"/>
             </Grid>
           </StackPanel>
         </Border>
 
         <TextBlock Text="{Binding ErrorMessage}"
-                   Foreground="#EF5350" FontSize="13"
+                   Foreground="{DynamicResource Brush.Danger}"
+                   FontSize="13"
                    Margin="0,8,0,0"/>
       </StackPanel>
     </ScrollViewer>
 
     <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="0,16,0,0">
       <Button Grid.Column="0" Content="← Back to Cart" Name="BackButton"
-              Background="#37474F" Foreground="White"
+              Background="{DynamicResource Brush.Brown}"
+              Foreground="{DynamicResource Brush.Light}"
               Padding="16,10" CornerRadius="8" HorizontalAlignment="Left"/>
       <Button Grid.Column="1" Content="Pay Now →" Name="PayButton"
-              Background="#2E7D32" Foreground="White"
+              Background="{DynamicResource Brush.Accent}"
+              Foreground="{DynamicResource Brush.DarkBrown}"
               FontWeight="SemiBold" FontSize="15"
               Padding="24,12" CornerRadius="8"/>
     </Grid>

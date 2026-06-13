@@ -21,11 +21,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\" />
+    <ProjectReference Include="..\Minimarket.Core\Minimarket.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Minimarket.Core\Minimarket.Core.csproj" />
+    <Compile Update="Views\ProductListView.axaml.cs">
+      <DependentUpon>ProductListView.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

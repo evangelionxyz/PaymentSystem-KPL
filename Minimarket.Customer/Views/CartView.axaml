@@ -7,40 +7,41 @@
   <Grid RowDefinitions="Auto,*,Auto" Margin="20">
 
     <!-- Header -->
-    <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="12" Margin="0,0,0,16">
-      <TextBlock Text="Cart" FontSize="22" FontWeight="Bold" Foreground="#E0E0E0"
+    <StackPanel Grid.Row="0" Margin="0,0,0,16">
+      <TextBlock Text="Your Cart"
+                 FontSize="22"
+                 FontWeight="Bold"
+                 Foreground="{DynamicResource Brush.DarkBrown}"
                  VerticalAlignment="Center"/>
-      <Border Background="#1E3A5F" CornerRadius="6" Padding="8,4">
-        <TextBlock>
-          <Run Text="FSM: " Foreground="#9E9E9E"/>
-          <Run Text="{Binding FsmStateDisplay}" Foreground="#64B5F6" FontWeight="SemiBold"/>
-        </TextBlock>
-      </Border>
     </StackPanel>
 
     <!-- Items List -->
-    <Border Grid.Row="1" Background="#12121F" BorderBrush="#2A2A4A" BorderThickness="1" CornerRadius="8">
+    <Border Grid.Row="1"
+            Background="{DynamicResource Brush.Light}"
+            BorderBrush="{DynamicResource Brush.Brown}"
+            BorderThickness="1"
+            CornerRadius="8">
       <ScrollViewer>
         <StackPanel>
           <!-- Header Row -->
-          <Grid ColumnDefinitions="*,120,60,120,120" Margin="12,8" >
-            <TextBlock Grid.Column="0" Text="Product"    Foreground="#9E9E9E" FontWeight="SemiBold"/>
-            <TextBlock Grid.Column="1" Text="Unit Price" Foreground="#9E9E9E" FontWeight="SemiBold"/>
-            <TextBlock Grid.Column="2" Text="Qty"        Foreground="#9E9E9E" FontWeight="SemiBold"/>
-            <TextBlock Grid.Column="3" Text="Discount"   Foreground="#9E9E9E" FontWeight="SemiBold"/>
-            <TextBlock Grid.Column="4" Text="Line Total" Foreground="#9E9E9E" FontWeight="SemiBold"/>
+          <Grid ColumnDefinitions="*,120,60,120,120" Margin="12,8">
+            <TextBlock Grid.Column="0" Text="Product"    Foreground="{DynamicResource Brush.Brown}" FontWeight="SemiBold"/>
+            <TextBlock Grid.Column="1" Text="Unit Price" Foreground="{DynamicResource Brush.Brown}" FontWeight="SemiBold"/>
+            <TextBlock Grid.Column="2" Text="Qty"        Foreground="{DynamicResource Brush.Brown}" FontWeight="SemiBold"/>
+            <TextBlock Grid.Column="3" Text="Discount"   Foreground="{DynamicResource Brush.Brown}" FontWeight="SemiBold"/>
+            <TextBlock Grid.Column="4" Text="Line Total" Foreground="{DynamicResource Brush.Brown}" FontWeight="SemiBold"/>
           </Grid>
-          <Rectangle Height="1" Fill="#2A2A4A"/>
+          <Rectangle Height="1" Fill="{DynamicResource Brush.Brown}" Opacity="0.3"/>
 
           <ItemsControl ItemsSource="{Binding Items}">
             <ItemsControl.ItemTemplate>
               <DataTemplate>
                 <Grid ColumnDefinitions="*,120,60,120,120" Margin="12,8">
-                  <TextBlock Grid.Column="0" Text="{Binding ProductName}" Foreground="#E0E0E0"/>
-                  <TextBlock Grid.Column="1" Text="{Binding UnitPrice, StringFormat='Rp {0:N0}'}" Foreground="#E0E0E0"/>
-                  <TextBlock Grid.Column="2" Text="{Binding Quantity}"    Foreground="#E0E0E0"/>
-                  <TextBlock Grid.Column="3" Text="{Binding DiscountAmount, StringFormat='- Rp {0:N0}'}" Foreground="#EF9A9A"/>
-                  <TextBlock Grid.Column="4" Text="{Binding LineTotal,   StringFormat='Rp {0:N0}'}" Foreground="#81C784" FontWeight="SemiBold"/>
+                  <TextBlock Grid.Column="0" Text="{Binding ProductName}"                                                               Foreground="{DynamicResource Brush.DarkBrown}"/>
+                  <TextBlock Grid.Column="1" Text="{Binding UnitPrice, StringFormat='Rp {0:N0}'}"                                      Foreground="{DynamicResource Brush.DarkBrown}"/>
+                  <TextBlock Grid.Column="2" Text="{Binding Quantity}"                                                                  Foreground="{DynamicResource Brush.DarkBrown}"/>
+                  <TextBlock Grid.Column="3" Text="{Binding DiscountAmount, StringFormat='- Rp {0:N0}'}"                               Foreground="{DynamicResource Brush.Danger}"/>
+                  <TextBlock Grid.Column="4" Text="{Binding LineTotal,      StringFormat='Rp {0:N0}'}"                                 Foreground="{DynamicResource Brush.DarkBrown}" FontWeight="SemiBold"/>
                 </Grid>
               </DataTemplate>
             </ItemsControl.ItemTemplate>
@@ -51,35 +52,40 @@
 
     <!-- Totals Footer + Actions -->
     <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="0,16,0,0">
-      <Border Grid.Column="0" Background="#1A1A2E" CornerRadius="8" Padding="16,12">
+      <Border Grid.Column="0"
+              Background="{DynamicResource Brush.LightBrown}"
+              CornerRadius="8"
+              Padding="16,12">
         <StackPanel Spacing="6">
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="Subtotal"    Foreground="#9E9E9E"/>
-            <TextBlock Grid.Column="1" Text="{Binding Subtotal,       StringFormat='Rp {0:N0}'}" Foreground="#E0E0E0"/>
+            <TextBlock Text="Subtotal"     Foreground="{DynamicResource Brush.Brown}"/>
+            <TextBlock Grid.Column="1"    Text="{Binding Subtotal,       StringFormat='Rp {0:N0}'}" Foreground="{DynamicResource Brush.DarkBrown}"/>
           </Grid>
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="Discount"    Foreground="#EF9A9A"/>
-            <TextBlock Grid.Column="1" Text="{Binding DiscountAmount, StringFormat='- Rp {0:N0}'}" Foreground="#EF9A9A"/>
+            <TextBlock Text="Discount"     Foreground="{DynamicResource Brush.Danger}"/>
+            <TextBlock Grid.Column="1"    Text="{Binding DiscountAmount, StringFormat='- Rp {0:N0}'}" Foreground="{DynamicResource Brush.Danger}"/>
           </Grid>
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="Tax"         Foreground="#9E9E9E"/>
-            <TextBlock Grid.Column="1" Text="{Binding TaxAmount,      StringFormat='+ Rp {0:N0}'}" Foreground="#9E9E9E"/>
+            <TextBlock Text="Tax"          Foreground="{DynamicResource Brush.Brown}"/>
+            <TextBlock Grid.Column="1"    Text="{Binding TaxAmount,      StringFormat='+ Rp {0:N0}'}" Foreground="{DynamicResource Brush.Brown}"/>
           </Grid>
-          <Rectangle Height="1" Fill="#2A2A4A"/>
+          <Rectangle Height="1" Fill="{DynamicResource Brush.Brown}" Opacity="0.3"/>
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="Total"       FontWeight="Bold" FontSize="16" Foreground="#E0E0E0"/>
-            <TextBlock Grid.Column="1" Text="{Binding Total, StringFormat='Rp {0:N0}'}"
-                       FontWeight="Bold" FontSize="16" Foreground="#81C784"/>
+            <TextBlock Text="Total"        FontWeight="Bold" FontSize="16" Foreground="{DynamicResource Brush.DarkBrown}"/>
+            <TextBlock Grid.Column="1"    Text="{Binding Total, StringFormat='Rp {0:N0}'}"
+                       FontWeight="Bold"  FontSize="16" Foreground="{DynamicResource Brush.Good}"/>
           </Grid>
         </StackPanel>
       </Border>
 
       <StackPanel Grid.Column="1" Spacing="10" Margin="16,0,0,0" VerticalAlignment="Bottom">
         <Button Content="← Back" Name="BackButton"
-                Background="#37474F" Foreground="White"
+                Background="{DynamicResource Brush.Brown}"
+                Foreground="{DynamicResource Brush.Light}"
                 Padding="16,10" CornerRadius="8"/>
         <Button Content="Confirm Cart →" Name="ConfirmButton"
-                Background="#1565C0" Foreground="White"
+                Background="{DynamicResource Brush.Accent}"
+                Foreground="{DynamicResource Brush.DarkBrown}"
                 FontWeight="SemiBold" Padding="16,10" CornerRadius="8"/>
       </StackPanel>
     </Grid>

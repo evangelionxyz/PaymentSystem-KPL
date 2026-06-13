@@ -3,12 +3,6 @@ using Microsoft.Extensions.Logging;
 
 namespace Minimarket.Core.Engines;
 
-/// <summary>
-/// Applies discount rules to a Cart. Supports two RuleTypes registered in
-/// the parent's dispatch table:
-///   - "DiscountPercentage": reduces matching line totals by Value%.
-///   - "BuyXGetY": parses Condition="X=2,Y=1" and gives Y free units per X purchased.
-/// </summary>
 public class DiscountEngine : PricingEngine<DiscountRule>
 {
     public DiscountEngine(ILogger<DiscountEngine>? logger = null) : base(logger)
@@ -23,10 +17,8 @@ public class DiscountEngine : PricingEngine<DiscountRule>
     {
         foreach (var item in cart.Items)
         {
-            bool matchesCategory = rule.CategoryId is not null &&
-                                   item.CategoryId == rule.CategoryId;
-            bool matchesProduct = rule.ProductId is not null &&
-                                  item.ProductId == rule.ProductId;
+            bool matchesCategory = rule.CategoryId is not null && item.CategoryId == rule.CategoryId;
+            bool matchesProduct = rule.ProductId is not null && item.ProductId == rule.ProductId;
             bool appliesToAll = rule.CategoryId is null && rule.ProductId is null;
 
             if (matchesCategory || matchesProduct || appliesToAll)
@@ -35,7 +27,6 @@ public class DiscountEngine : PricingEngine<DiscountRule>
                 item.DiscountAmount += Math.Round(discount, 2);
             }
         }
-        // Recompute cart-level discount total.
         cart.DiscountAmount = cart.Items.Sum(i => i.DiscountAmount);
         return cart;
     }
@@ -59,13 +50,13 @@ public class DiscountEngine : PricingEngine<DiscountRule>
             bool matches = (rule.ProductId is not null && item.ProductId == rule.ProductId) ||
                            (rule.CategoryId is not null && item.CategoryId == rule.CategoryId);
 
-            if (!matches) continue;
+            if (!matches)
+                continue;
 
             int freeSets = item.Quantity / (x + y);
             int remainder = item.Quantity % (x + y);
             int freeFromRemainder = Math.Max(0, remainder - x);
             int freeUnits = freeSets * y + freeFromRemainder;
-
             item.DiscountAmount += Math.Round(item.UnitPrice * freeUnits, 2);
         }
 

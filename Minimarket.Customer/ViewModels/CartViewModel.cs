@@ -6,6 +6,8 @@ using Minimarket.Core.Models;
 using Minimarket.Core.States;
 using Minimarket.Core.Services;
 using Desktop.Avalonia.Services;
+using System.Diagnostics;
+using MongoDB.Bson;
 
 namespace Desktop.Avalonia.ViewModels;
 
@@ -15,8 +17,9 @@ public class CartViewModel : INotifyPropertyChanged
     private readonly PricingConfigCache _cache;
     private TransactionFSM _fsm;
 
-    // Stable cart ID for this session — resets on New Transaction.
-    public string CartId { get; set; } = Guid.NewGuid().ToString();
+    // Stable cart ID for this session — must be a valid MongoDB ObjectId (24-char hex).
+    // Using ObjectId.GenerateNewId() instead of Guid to satisfy BsonRepresentation(ObjectId).
+    public string CartId { get; set; } = ObjectId.GenerateNewId().ToString();
 
     private bool _isVip;
     public bool IsVip
@@ -48,6 +51,11 @@ public class CartViewModel : INotifyPropertyChanged
     // ======================================
     public void TriggerFsm(string trigger)
     {
+        // Guard: silently ignore triggers that have no valid transition from the current state
+        var available = _fsm.AvailableTransitions();
+        if (!available.Any(t => string.Equals(t.Trigger, trigger, StringComparison.OrdinalIgnoreCase)))
+            return;
+
         _fsm.Trigger(trigger);
         OnPropertyChanged(nameof(FsmStateDisplay));
         OnPropertyChanged(nameof(FsmState));
@@ -60,8 +68,12 @@ public class CartViewModel : INotifyPropertyChanged
     {
         try
         {
+            // Online flow: Idle → AwaitingPayment on first item add.
+            // If already AwaitingPayment (items already in cart), don't fire any trigger.
             if (_fsm.CurrentState == TransactionState.Idle)
-                TriggerFsm("StartScan");
+            {
+                TriggerFsm("CartConfirmed");
+            }
 
             var cart = await _api.AddToCartAsync(CartId, product.ID!, 1);
             if (cart is not null)
@@ -70,7 +82,10 @@ public class CartViewModel : INotifyPropertyChanged
                 RecomputeTotalsLocally();
             }
         }
-        catch { /* API error — item still shown locally */ }
+        catch (Exception e)
+        {
+            Trace.Assert(false, e.Message);    
+        }
     }
 
     public async Task RemoveItemAsync(CartItem item)
@@ -141,7 +156,7 @@ public class CartViewModel : INotifyPropertyChanged
     {
         Items.Clear();
         Subtotal = DiscountAmount = TaxAmount = Total = 0;
-        CartId = Guid.NewGuid().ToString();
+        CartId = ObjectId.GenerateNewId().ToString();
         _fsm = _cache.CreateFsm();
         OnPropertyChanged(nameof(FsmStateDisplay));
         OnPropertyChanged(nameof(CartId));

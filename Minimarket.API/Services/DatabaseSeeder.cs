@@ -52,7 +52,7 @@ public class DatabaseSeeder
         await _rulesCollection.InsertManyAsync(defaults);
     }
 
-    /// <summary>Inserts 7 default FSM transitions if the collection is empty.</summary>
+    /// <summary>Inserts 6 default FSM transitions if the collection is empty.</summary>
     public async Task SeedMachineStatesAsync()
     {
         if (await _statesCollection.CountDocumentsAsync(FilterDefinition<MachineStateTransition>.Empty) > 0)
@@ -60,8 +60,7 @@ public class DatabaseSeeder
 
         var transitions = new List<MachineStateTransition>
         {
-            new() { From = TransactionState.Idle,              To = TransactionState.Scanning,           Trigger = "StartScan"         },
-            new() { From = TransactionState.Scanning,          To = TransactionState.AwaitingPayment,    Trigger = "CartConfirmed"     },
+            new() { From = TransactionState.Idle,              To = TransactionState.AwaitingPayment,    Trigger = "CartConfirmed"     },
             new() { From = TransactionState.AwaitingPayment,   To = TransactionState.ProcessingPayment,  Trigger = "PaymentSelected"   },
             new() { From = TransactionState.ProcessingPayment, To = TransactionState.Completed,          Trigger = "PaymentConfirmed"  },
             new() { From = TransactionState.ProcessingPayment, To = TransactionState.Cancelled,          Trigger = "PaymentFailed"     },

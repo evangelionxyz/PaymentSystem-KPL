@@ -1,11 +1,5 @@
-using Microsoft.Extensions.Logging;
-
 namespace Minimarket.Core.Engines;
 
-/// <summary>
-/// Concrete rule type consumed by DiscountEngine.
-/// Maps from a PricingRule document; only discount-relevant fields are used.
-/// </summary>
 public class DiscountRule : IPricingRule
 {
     public string RuleType { get; set; } = string.Empty;

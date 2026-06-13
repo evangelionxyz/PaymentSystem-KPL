@@ -58,8 +58,8 @@
       <!-- Main POS view content (hidden until authenticated) -->
       <Grid Name="MainPOSGrid" IsVisible="False" RowDefinitions="*,100">
         <Grid Grid.Row="0">
-          <views:ProductScanView DataContext="{Binding ProductScanVm}"
-                                 Name="ProductScanPage"/>
+          <views:ProductListView DataContext="{Binding ProductListVm}"
+                                 Name="ProductListPage"/>
           <views:CartView DataContext="{Binding CartVm}"
                           Name="CartPage"
                           IsVisible="True"/>

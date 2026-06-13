@@ -33,15 +33,11 @@ public class TaxEngine : PricingEngine<TaxRule>
             bool matchesCategory = string.IsNullOrEmpty(rule.CategoryId) || item.CategoryId == rule.CategoryId;
             if (!matchesCategory) continue;
 
-            decimal fee = 0;
+            decimal fee;
             if (rule.Condition == "Flat")
-            {
                 fee = rule.Rate * item.Quantity;
-            }
             else
-            {
                 fee = item.LineTotal * rule.Rate;
-            }
             cart.TaxAmount += Math.Round(fee, 2);
         }
         return cart;

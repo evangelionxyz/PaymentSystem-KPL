@@ -8,7 +8,7 @@ using Desktop.Avalonia.Services;
 
 namespace Desktop.Avalonia.ViewModels;
 
-public class ProductScanViewModel : INotifyPropertyChanged
+public class ProductListViewModel : INotifyPropertyChanged
 {
     private readonly ApiClient _api;
     private readonly PricingConfigCache _cache;
@@ -39,7 +39,7 @@ public class ProductScanViewModel : INotifyPropertyChanged
 
     public string FsmState => _cartVm.FsmStateDisplay;
 
-    public ProductScanViewModel(ApiClient api, PricingConfigCache cache, CartViewModel cartVm)
+    public ProductListViewModel(ApiClient api, PricingConfigCache cache, CartViewModel cartVm)
     {
         _api   = api;
         _cache = cache;

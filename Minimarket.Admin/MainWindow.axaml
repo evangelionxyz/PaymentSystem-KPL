@@ -106,7 +106,7 @@
 
                   <StackPanel Spacing="5">
                     <TextBlock Text="Name" Foreground="#B0BEC5" FontSize="11"/>
-                    <TextBox Name="TxtProdName" Watermark="Product Name" Background="#1A1A35" Foreground="White"/>
+                    <TextBox Name="TxtProdName" PlaceholderText="Product Name" Background="#1A1A35" Foreground="White"/>
                   </StackPanel>
 
                   <StackPanel Spacing="5">
@@ -121,12 +121,12 @@
 
                   <StackPanel Spacing="5">
                     <TextBlock Text="Price" Foreground="#B0BEC5" FontSize="11"/>
-                    <TextBox Name="TxtProdPrice" Watermark="Price (Rp)" Background="#1A1A35" Foreground="White"/>
+                    <TextBox Name="TxtProdPrice" PlaceholderText="Price (Rp)" Background="#1A1A35" Foreground="White"/>
                   </StackPanel>
 
                   <StackPanel Spacing="5">
                     <TextBlock Text="Stock" Foreground="#B0BEC5" FontSize="11"/>
-                    <TextBox Name="TxtProdStock" Watermark="Stock quantity" Background="#1A1A35" Foreground="White"/>
+                    <TextBox Name="TxtProdStock" PlaceholderText="Stock quantity" Background="#1A1A35" Foreground="White"/>
                   </StackPanel>
 
                   <Grid ColumnDefinitions="*,*" Margin="0,10,0,0">
@@ -164,7 +164,7 @@
               
               <!-- Search log -->
               <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,10">
-                <TextBox Grid.Column="0" Text="{Binding AuditTransactionId, Mode=TwoWay}" Watermark="Enter Transaction (Cart) ID to retrieve logs" Background="#12122A" Foreground="White"/>
+                <TextBox Grid.Column="0" Text="{Binding AuditTransactionId, Mode=TwoWay}" PlaceholderText="Enter Transaction (Cart) ID to retrieve logs" Background="#12122A" Foreground="White"/>
                 <Button Grid.Column="1" Content="🔍 Load Log" Name="BtnLoadAuditLogs" Margin="10,0,0,0" Background="#1E88E5" Foreground="White"/>
               </Grid>
 

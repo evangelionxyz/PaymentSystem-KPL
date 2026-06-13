@@ -11,7 +11,7 @@ public partial class MainWindow : Window
     private MainWindowViewModel Vm => (MainWindowViewModel)DataContext!;
 
     // Page references
-    private ProductScanView _scanPage = null!;
+    private ProductListView _productListPage = null!;
     private CartView        _cartPage = null!;
     private PaymentView     _payPage  = null!;
     private ReceiptView     _rcptPage = null!;
@@ -28,7 +28,7 @@ public partial class MainWindow : Window
     private async void OnLoaded(object? sender, RoutedEventArgs e)
     {
         // Grab named controls
-        _scanPage = this.FindControl<ProductScanView>("ProductScanPage")!;
+        _productListPage = this.FindControl<ProductListView>("ProductListPage")!;
         _cartPage = this.FindControl<CartView>("CartPage")!;
         _payPage  = this.FindControl<PaymentView>("PaymentPage")!;
         _rcptPage = this.FindControl<ReceiptView>("ReceiptPage")!;
@@ -50,12 +50,12 @@ public partial class MainWindow : Window
             this.FindControl<Border>("OfflineBanner")!.IsVisible = true;
 
         WireButtons();
-        ShowPage(AppPage.ProductScan);
+        ShowPage(AppPage.ProductList);
     }
 
     private void ShowPage(AppPage page)
     {
-        _scanPage.IsVisible = page == AppPage.ProductScan;
+        _productListPage.IsVisible = page == AppPage.ProductList;
         _cartPage.IsVisible = page == AppPage.Cart;
         _payPage.IsVisible  = page == AppPage.Payment;
         _rcptPage.IsVisible = page == AppPage.Receipt;
@@ -63,24 +63,24 @@ public partial class MainWindow : Window
 
     private void WireButtons()
     {
-        // ProductScanView — "View Cart →"
-        var viewCartBtn = _scanPage.FindControl<Button>("ViewCartButton")!;
+        // ProductListView — "View Cart →"
+        var viewCartBtn = _productListPage.FindControl<Button>("ViewCartButton")!;
         viewCartBtn.Click += (_, _) =>
         {
             Vm.CartVm.RecomputeTotalsLocally();
             ShowPage(AppPage.Cart);
         };
 
-        // ProductScanView — individual "Add" buttons via ListBox
-        var productList = _scanPage.FindControl<ListBox>("ProductList")!;
+        // ProductListView — individual "Add" buttons via ListBox
+        var productList = _productListPage.FindControl<ListBox>("ProductList")!;
         productList.AddHandler(Button.ClickEvent, (object? sender, RoutedEventArgs e) =>
         {
             if (e.Source is Button btn && btn.Tag is Product product)
-                _ = Vm.ProductScanVm.AddToCartAsync(product);
+                _ = Vm.ProductListVm.AddToCartAsync(product);
         });
 
         // CartView
-        _cartPage.FindControl<Button>("BackButton")!.Click    += (_, _) => ShowPage(AppPage.ProductScan);
+        _cartPage.FindControl<Button>("BackButton")!.Click    += (_, _) => ShowPage(AppPage.ProductList);
         _cartPage.FindControl<Button>("ConfirmButton")!.Click += (_, _) =>
         {
             Vm.GoToPayment();
@@ -110,7 +110,7 @@ public partial class MainWindow : Window
         _rcptPage.FindControl<Button>("NewTransactionButton")!.Click += (_, _) =>
         {
             Vm.StartNewTransaction();
-            ShowPage(AppPage.ProductScan);
+            ShowPage(AppPage.ProductList);
         };
     }
 }

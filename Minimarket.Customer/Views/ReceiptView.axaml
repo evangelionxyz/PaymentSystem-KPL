@@ -8,65 +8,73 @@
     <StackPanel Spacing="16" MaxWidth="600" HorizontalAlignment="Center">
 
       <!-- Header -->
-      <TextBlock Text="🧾 Receipt" FontSize="26" FontWeight="Bold"
-                 Foreground="#E0E0E0" HorizontalAlignment="Center"/>
+      <TextBlock Text="Receipt" FontSize="26" FontWeight="Bold"
+                 Foreground="{DynamicResource Brush.DarkBrown}"
+                 HorizontalAlignment="Center"/>
 
       <!-- Receipt Card -->
-      <Border Background="#1A1A2E" CornerRadius="12" Padding="24"
+      <Border Background="{DynamicResource Brush.LightBrown}"
+              CornerRadius="12" Padding="24"
               IsVisible="{Binding HasReceipt}">
         <StackPanel Spacing="12">
 
           <!-- Store / Date -->
           <TextBlock Text="Minimarket POS"
                      FontSize="18" FontWeight="SemiBold"
-                     Foreground="#64B5F6" HorizontalAlignment="Center"/>
+                     Foreground="{DynamicResource Brush.Brown}"
+                     HorizontalAlignment="Center"/>
           <TextBlock Text="{Binding Receipt.Date, StringFormat='{}{0:dd MMM yyyy  HH:mm}'}"
-                     FontSize="12" Foreground="#9E9E9E" HorizontalAlignment="Center"/>
+                     FontSize="12"
+                     Foreground="{DynamicResource Brush.DarkBrown}"
+                     HorizontalAlignment="Center"/>
 
-          <Separator Background="#2A2A4A" Margin="0,8"/>
+          <Separator Background="{DynamicResource Brush.Brown}" Margin="0,8" Opacity="0.4"/>
 
           <!-- Items -->
           <TextBlock Text="{Binding ItemsDisplay}"
                      FontFamily="Consolas, Monospace"
-                     FontSize="13" Foreground="#E0E0E0"/>
+                     FontSize="13"
+                     Foreground="{DynamicResource Brush.DarkBrown}"/>
 
-          <Separator Background="#2A2A4A" Margin="0,8"/>
+          <Separator Background="{DynamicResource Brush.Brown}" Margin="0,8" Opacity="0.4"/>
 
           <!-- Totals -->
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="Subtotal"       Foreground="#9E9E9E"/>
-            <TextBlock Grid.Column="1" Text="{Binding Receipt.Subtotal,       StringFormat='Rp {0:N0}'}" Foreground="#E0E0E0"/>
+            <TextBlock Text="Subtotal"       Foreground="{DynamicResource Brush.Brown}"/>
+            <TextBlock Grid.Column="1" Text="{Binding Receipt.Subtotal,       StringFormat='Rp {0:N0}'}" Foreground="{DynamicResource Brush.DarkBrown}"/>
           </Grid>
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="Discount"       Foreground="#EF9A9A"/>
-            <TextBlock Grid.Column="1" Text="{Binding Receipt.DiscountAmount, StringFormat='- Rp {0:N0}'}" Foreground="#EF9A9A"/>
+            <TextBlock Text="Discount"       Foreground="{DynamicResource Brush.Danger}"/>
+            <TextBlock Grid.Column="1" Text="{Binding Receipt.DiscountAmount, StringFormat='- Rp {0:N0}'}" Foreground="{DynamicResource Brush.Danger}"/>
           </Grid>
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="Tax"            Foreground="#9E9E9E"/>
-            <TextBlock Grid.Column="1" Text="{Binding Receipt.TaxAmount,      StringFormat='+ Rp {0:N0}'}" Foreground="#9E9E9E"/>
+            <TextBlock Text="Tax"            Foreground="{DynamicResource Brush.Brown}"/>
+            <TextBlock Grid.Column="1" Text="{Binding Receipt.TaxAmount,      StringFormat='+ Rp {0:N0}'}" Foreground="{DynamicResource Brush.Brown}"/>
           </Grid>
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="Payment Fee"    Foreground="#FFB74D"/>
-            <TextBlock Grid.Column="1" Text="{Binding Receipt.FeeAmount,      StringFormat='+ Rp {0:N0}'}" Foreground="#FFB74D"/>
+            <TextBlock Text="Payment Fee"    Foreground="{DynamicResource Brush.Accent}"/>
+            <TextBlock Grid.Column="1" Text="{Binding Receipt.FeeAmount,      StringFormat='+ Rp {0:N0}'}" Foreground="{DynamicResource Brush.Accent}"/>
           </Grid>
 
-          <Separator Background="#2A2A4A"/>
+          <Separator Background="{DynamicResource Brush.Brown}" Opacity="0.4"/>
 
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="TOTAL" FontWeight="Bold" FontSize="18" Foreground="#E0E0E0"/>
+            <TextBlock Text="TOTAL" FontWeight="Bold" FontSize="18" Foreground="{DynamicResource Brush.DarkBrown}"/>
             <TextBlock Grid.Column="1" Text="{Binding Receipt.Total, StringFormat='Rp {0:N0}'}"
-                       FontWeight="Bold" FontSize="18" Foreground="#81C784"/>
+                       FontWeight="Bold" FontSize="18"
+                       Foreground="{DynamicResource Brush.Good}"/>
           </Grid>
 
-          <Separator Background="#2A2A4A" Margin="0,8"/>
+          <Separator Background="{DynamicResource Brush.Brown}" Margin="0,8" Opacity="0.4"/>
 
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="Payment Method" Foreground="#9E9E9E"/>
-            <TextBlock Grid.Column="1" Text="{Binding Receipt.PaymentMethod}" Foreground="#E0E0E0"/>
+            <TextBlock Text="Payment Method" Foreground="{DynamicResource Brush.Brown}"/>
+            <TextBlock Grid.Column="1" Text="{Binding Receipt.PaymentMethod}" Foreground="{DynamicResource Brush.DarkBrown}"/>
           </Grid>
 
-          <TextBlock Text="Thank you for shopping! 🙏"
-                     FontSize="14" Foreground="#9E9E9E"
+          <TextBlock Text="Thank you for shopping!"
+                     FontSize="14"
+                     Foreground="{DynamicResource Brush.Brown}"
                      HorizontalAlignment="Center" Margin="0,16,0,0"/>
         </StackPanel>
       </Border>
@@ -74,7 +82,8 @@
       <!-- New Transaction Button -->
       <Button Content="🔄 New Transaction"
               Name="NewTransactionButton"
-              Background="#1565C0" Foreground="White"
+              Background="{DynamicResource Brush.Accent}"
+              Foreground="{DynamicResource Brush.DarkBrown}"
               FontSize="15" FontWeight="SemiBold"
               Padding="24,12" CornerRadius="8"
               HorizontalAlignment="Center"/>

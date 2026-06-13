@@ -16,8 +16,6 @@ public class CartService(
         client.GetDatabase(settings.Value.DatabaseName)
               .GetCollection<Cart>(settings.Value.CartCollectionName);
 
-    // ── CRUD ──────────────────────────────────────────────────────────────────
-
     public async Task<List<Cart>> GetAsync() =>
         await _carts.Find(_ => true).ToListAsync();
 

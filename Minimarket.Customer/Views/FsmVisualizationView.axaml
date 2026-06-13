@@ -13,51 +13,35 @@
                  Foreground="{DynamicResource Brush.Light}" 
                  HorizontalAlignment="Center"/>
       
-      <Grid ColumnDefinitions="auto,auto,auto,auto,auto,auto"
+      <Grid ColumnDefinitions="auto,auto,auto,auto,auto"
             RowDefinitions="Auto" 
             Margin="1">
-        <!-- Idle -->
+
         <Border Grid.Column="0" Grid.Row="0" 
                 Name="NodeIdle" 
                 Margin="4"
                 Padding="10" 
                 CornerRadius="8" 
-                Background="#1C1C3A" 
-                BorderThickness="2" BorderBrush="#2C2C4E" 
+                Background="{DynamicResource Brush.Brown}" 
+                BorderThickness="2" BorderBrush="{DynamicResource Brush.Light}" 
                 Opacity="0.5">
           <StackPanel HorizontalAlignment="Center">
-            <TextBlock Text="Idle" FontSize="12" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Center"/>
-          </StackPanel>
-        </Border>
-
-        <!-- Scanning -->
-        <Border Grid.Column="1" Grid.Row="0"
-                Name="NodeScanning"
-                Margin="4"
-                Padding="10"
-                CornerRadius="8"
-                Background="#1C1C3A"
-                BorderThickness="2"
-                BorderBrush="#2C2C4E"
-                Opacity="0.5">
-          <StackPanel HorizontalAlignment="Center">
-            <TextBlock Text="Scanning"
-                       FontSize="12"
+            <TextBlock Text="Idle" FontSize="12"
                        FontWeight="SemiBold"
-                       Foreground="White"
+                       Foreground="White" 
                        HorizontalAlignment="Center"/>
           </StackPanel>
         </Border>
 
         <!-- AwaitingPayment -->
-        <Border Grid.Column="2" Grid.Row="0"
+        <Border Grid.Column="1" Grid.Row="0"
                 Name="NodeAwaitingPayment"
                 Margin="4"
                 Padding="10"
                 CornerRadius="8"
-                Background="#1C1C3A"
+                Background="{DynamicResource Brush.Brown}"
                 BorderThickness="2"
-                BorderBrush="#2C2C4E"
+                BorderBrush="{DynamicResource Brush.Light}"
                 Opacity="0.5">
           <StackPanel HorizontalAlignment="Center">
             <TextBlock Text="Awaiting Pay"
@@ -69,14 +53,14 @@
         </Border>
 
         <!-- Cancelled -->
-        <Border Grid.Column="3" Grid.Row="0"
+        <Border Grid.Column="2" Grid.Row="0"
                 Name="NodeCancelled"
                 Margin="4"
                 Padding="10"
                 CornerRadius="8"
-                Background="#1C1C3A"
+                Background="{DynamicResource Brush.Brown}"
                 BorderThickness="2"
-                BorderBrush="#2C2C4E"
+                BorderBrush="{DynamicResource Brush.Light}"
                 Opacity="0.5">
           <StackPanel HorizontalAlignment="Center">
             <TextBlock Text="Cancelled"
@@ -88,14 +72,14 @@
         </Border>
 
         <!-- ProcessingPayment -->
-        <Border Grid.Column="4" Grid.Row="0"
+        <Border Grid.Column="3" Grid.Row="0"
                 Name="NodeProcessingPayment"
                 Margin="4"
                 Padding="10"
                 CornerRadius="8"
-                Background="#1C1C3A"
+                Background="{DynamicResource Brush.Brown}"
                 BorderThickness="2"
-                BorderBrush="#2C2C4E"
+                BorderBrush="{DynamicResource Brush.Light}"
                 Opacity="0.5">
           <StackPanel HorizontalAlignment="Center">
             <TextBlock Text="Processing"
@@ -107,14 +91,14 @@
         </Border>
 
         <!-- Completed -->
-        <Border Grid.Column="5" Grid.Row="0"
+        <Border Grid.Column="4" Grid.Row="0"
                 Name="NodeCompleted"
                 Margin="4"
                 Padding="10"
                 CornerRadius="8"
-                Background="#1C1C3A"
+                Background="{DynamicResource Brush.Brown}"
                 BorderThickness="2"
-                BorderBrush="#2C2C4E"
+                BorderBrush="{DynamicResource Brush.Light}"
                 Opacity="0.5">
           <StackPanel HorizontalAlignment="Center">
             <TextBlock Text="Completed"
