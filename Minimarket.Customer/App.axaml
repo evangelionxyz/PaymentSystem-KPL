@@ -52,6 +52,27 @@
             <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
+
+        <Style Selector="Button.danger-action">
+            <Setter Property="Background" Value="{DynamicResource Brush.Danger}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Light}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.DarkBrown}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style Selector="Button.danger-action:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.DarkBrown}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Danger}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Danger}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style Selector="Button.danger-action:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Danger}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Brush.DarkBrown}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Light}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
     </Application.Styles>
 
     <Application.Resources>

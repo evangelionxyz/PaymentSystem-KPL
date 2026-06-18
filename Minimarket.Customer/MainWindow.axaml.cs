@@ -87,6 +87,13 @@ public partial class MainWindow : Window
             ShowPage(AppPage.Payment);
         };
 
+        var cartItemsControl = _cartPage.FindControl<ItemsControl>("CartItemsControl")!;
+        cartItemsControl.AddHandler(Button.ClickEvent, (object? sender, RoutedEventArgs e) =>
+        {
+            if (e.Source is Button btn && btn.Tag is CartItem cartItem)
+                _ = Vm.CartVm.RemoveItemAsync(cartItem);
+        });
+
         // PaymentView — method selection via ListBox
         var methodList = _payPage.FindControl<ListBox>("MethodList")!;
         methodList.SelectionChanged += (_, e) =>
