@@ -18,3 +18,5 @@ openspec
 .codex
 .github/prompts
 .github/skills
+Minimarket.CLI/obj
+Minimarket.CLI/bin

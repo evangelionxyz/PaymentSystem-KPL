@@ -1,8 +1,7 @@
 using Minimarket.Core.Models;
 using Minimarket.Core.States;
-using Minimarket.Core.Services;
 
-namespace Desktop.Avalonia.Services;
+namespace Minimarket.Core.Services;
 
 /// <summary>
 /// Singleton cache that fetches pricing rules and FSM transitions from the API

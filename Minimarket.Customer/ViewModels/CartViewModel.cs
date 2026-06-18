@@ -5,7 +5,6 @@ using Minimarket.Core.Engines;
 using Minimarket.Core.Models;
 using Minimarket.Core.States;
 using Minimarket.Core.Services;
-using Desktop.Avalonia.Services;
 using System.Diagnostics;
 using MongoDB.Bson;
 
