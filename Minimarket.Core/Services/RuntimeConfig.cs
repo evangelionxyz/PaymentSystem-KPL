@@ -13,14 +13,25 @@ public class RuntimeConfig
     {
         try
         {
-            var jsonStr = File.ReadAllText(filename);
+            var path = filename;
+            if (!File.Exists(path))
+            {
+                path = Path.Combine(AppContext.BaseDirectory, filename);
+            }
+
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException($"Could not find configuration file: {filename}");
+            }
+
+            var jsonStr = File.ReadAllText(path);
             var rtConfig = JsonSerializer.Deserialize<RuntimeConfig>(jsonStr);
             return rtConfig;
         }
-        catch (JsonException e)
+        catch (Exception e)
         {
             Trace.TraceError(e.Message);
-            return null;
+            throw; // Re-throw so callers are aware of setup failure
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Minimarket.API.Test;
 [TestFixture]
 public class PaymentApiTests
 {
-    private ApiClient _api = null!;
+    private ApiClient? _api = null;
 
     [OneTimeSetUp]
     public void OneTimeSetUp()
