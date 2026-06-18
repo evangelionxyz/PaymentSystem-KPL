@@ -53,39 +53,57 @@
     <!-- Totals Footer + Actions -->
     <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="0,16,0,0">
       <Border Grid.Column="0"
-              Background="{DynamicResource Brush.LightBrown}"
+              Background="{DynamicResource Brush.Light}"
+              BorderBrush="{DynamicResource Brush.DarkBrown}"
               CornerRadius="8"
+              BorderThickness="1"
               Padding="16,12">
         <StackPanel Spacing="6">
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="Subtotal"     Foreground="{DynamicResource Brush.Brown}"/>
-            <TextBlock Grid.Column="1"    Text="{Binding Subtotal,       StringFormat='Rp {0:N0}'}" Foreground="{DynamicResource Brush.DarkBrown}"/>
+            <TextBlock Text="Subtotal"
+                       Foreground="{DynamicResource Brush.Brown}"/>
+            <TextBlock Grid.Column="1"
+                       Text="{Binding Subtotal, StringFormat='Rp {0:N0}'}"
+                       Foreground="{DynamicResource Brush.DarkBrown}"/>
           </Grid>
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="Discount"     Foreground="{DynamicResource Brush.Danger}"/>
-            <TextBlock Grid.Column="1"    Text="{Binding DiscountAmount, StringFormat='- Rp {0:N0}'}" Foreground="{DynamicResource Brush.Danger}"/>
+            <TextBlock Text="Discount"
+                       Foreground="{DynamicResource Brush.Danger}"/>
+            <TextBlock Grid.Column="1"
+                       Text="{Binding DiscountAmount, StringFormat='- Rp {0:N0}'}"
+                       Foreground="{DynamicResource Brush.Danger}"/>
           </Grid>
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="Tax"          Foreground="{DynamicResource Brush.Brown}"/>
-            <TextBlock Grid.Column="1"    Text="{Binding TaxAmount,      StringFormat='+ Rp {0:N0}'}" Foreground="{DynamicResource Brush.Brown}"/>
+            <TextBlock Text="Tax"
+                       Foreground="{DynamicResource Brush.Brown}"/>
+            <TextBlock Grid.Column="1" 
+                       Text="{Binding TaxAmount, StringFormat='+ Rp {0:N0}'}"
+                       Foreground="{DynamicResource Brush.Brown}"/>
           </Grid>
           <Rectangle Height="1" Fill="{DynamicResource Brush.Brown}" Opacity="0.3"/>
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="Total"        FontWeight="Bold" FontSize="16" Foreground="{DynamicResource Brush.DarkBrown}"/>
-            <TextBlock Grid.Column="1"    Text="{Binding Total, StringFormat='Rp {0:N0}'}"
-                       FontWeight="Bold"  FontSize="16" Foreground="{DynamicResource Brush.Good}"/>
+            <TextBlock Text="Total"
+                       FontWeight="Bold"
+                       FontSize="16"
+                       Foreground="{DynamicResource Brush.DarkBrown}"/>
+            <TextBlock Grid.Column="1"
+                       Text="{Binding Total, StringFormat='Rp {0:N0}'}"
+                       FontWeight="Bold" 
+                       FontSize="16"
+                       Foreground="{DynamicResource Brush.Brown}"/>
           </Grid>
         </StackPanel>
       </Border>
 
-      <StackPanel Grid.Column="1" Spacing="10" Margin="16,0,0,0" VerticalAlignment="Bottom">
+      <StackPanel Grid.Column="1"
+                  Spacing="10"
+                  Margin="16,0,0,0"
+                  VerticalAlignment="Bottom">
         <Button Content="← Back" Name="BackButton"
-                Background="{DynamicResource Brush.Brown}"
-                Foreground="{DynamicResource Brush.Light}"
+                Classes="secondary-action"
                 Padding="16,10" CornerRadius="8"/>
         <Button Content="Confirm Cart →" Name="ConfirmButton"
-                Background="{DynamicResource Brush.Accent}"
-                Foreground="{DynamicResource Brush.DarkBrown}"
+                Classes="accent-action"
                 FontWeight="SemiBold" Padding="16,10" CornerRadius="8"/>
       </StackPanel>
     </Grid>

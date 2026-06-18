@@ -4,6 +4,51 @@
              x:Class="Desktop.Avalonia.Views.PaymentView"
              x:DataType="vm:PaymentViewModel">
 
+  <UserControl.Styles>
+    <Style Selector="ListBox#MethodList > ListBoxItem">
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="Margin" Value="0"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    </Style>
+
+    <Style Selector="ListBox#MethodList > ListBoxItem:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style Selector="ListBox#MethodList > ListBoxItem:selected /template/ ContentPresenter">
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style Selector="ListBox#MethodList > ListBoxItem:selected:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style Selector="ListBox#MethodList ListBoxItem Border.payment-method-card">
+      <Setter Property="Background" Value="{DynamicResource Brush.Light}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.DarkBrown}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <Style Selector="ListBox#MethodList ListBoxItem:pointerover Border.payment-method-card">
+      <Setter Property="Background" Value="{DynamicResource Brush.Accent}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Brown}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <Style Selector="ListBox#MethodList ListBoxItem:selected Border.payment-method-card">
+      <Setter Property="Background" Value="{DynamicResource Brush.Brown}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <Style Selector="ListBox#MethodList ListBoxItem:selected TextBlock.payment-method-text">
+      <Setter Property="Foreground" Value="{DynamicResource Brush.Light}"/>
+    </Style>
+
+  </UserControl.Styles>
+
   <Grid RowDefinitions="Auto,*,Auto" Margin="20">
 
     <TextBlock Grid.Row="0" Text="Select Payment Method"
@@ -21,9 +66,13 @@
                  BorderThickness="0">
           <ListBox.ItemTemplate>
             <DataTemplate>
-              <Border Background="{DynamicResource Brush.LightBrown}"
-                      CornerRadius="8" Padding="16,12" Margin="0,4">
-                <TextBlock Text="{Binding}" FontSize="14"
+              <Border Classes="payment-method-card"
+                      CornerRadius="8"
+                      Padding="16,12"
+                      Margin="0,4">
+                <TextBlock Classes="payment-method-text"
+                           Text="{Binding}"
+                           FontSize="14"
                            Foreground="{DynamicResource Brush.DarkBrown}"
                            FontWeight="Medium"/>
               </Border>
@@ -32,15 +81,19 @@
         </ListBox>
 
         <!-- Fee Preview -->
-        <Border Background="{DynamicResource Brush.LightBrown}"
-                CornerRadius="8" Padding="16" Margin="0,16,0,0">
+        <Border Background="{DynamicResource Brush.Light}"
+                BorderBrush="{DynamicResource Brush.DarkBrown}"
+                BorderThickness="1"
+                CornerRadius="8"
+                Padding="16"
+                Margin="0,16,0,0">
           <StackPanel Spacing="8">
             <Grid ColumnDefinitions="*,Auto">
               <TextBlock Text="Payment Fee"
-                         Foreground="{DynamicResource Brush.Accent}"/>
+                         Foreground="{DynamicResource Brush.Brown}"/>
               <TextBlock Grid.Column="1"
                          Text="{Binding FeeAmount, StringFormat='+ Rp {0:N0}'}"
-                         Foreground="{DynamicResource Brush.Accent}"/>
+                         Foreground="{DynamicResource Brush.Brown}"/>
             </Grid>
             <Rectangle Height="1"
                        Fill="{DynamicResource Brush.Brown}"
@@ -52,8 +105,9 @@
                          Foreground="{DynamicResource Brush.DarkBrown}"/>
               <TextBlock Grid.Column="1"
                          Text="{Binding FinalTotal, StringFormat='Rp {0:N0}'}"
-                         FontWeight="Bold" FontSize="16"
-                         Foreground="{DynamicResource Brush.Good}"/>
+                         FontWeight="Bold"
+                         FontSize="16"
+                         Foreground="{DynamicResource Brush.DarkBrown}"/>
             </Grid>
           </StackPanel>
         </Border>
@@ -66,14 +120,20 @@
     </ScrollViewer>
 
     <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="0,16,0,0">
-      <Button Grid.Column="0" Content="← Back to Cart" Name="BackButton"
-              Background="{DynamicResource Brush.Brown}"
-              Foreground="{DynamicResource Brush.Light}"
-              Padding="16,10" CornerRadius="8" HorizontalAlignment="Left"/>
-      <Button Grid.Column="1" Content="Pay Now →" Name="PayButton"
-              Background="{DynamicResource Brush.Accent}"
-              Foreground="{DynamicResource Brush.DarkBrown}"
-              FontWeight="SemiBold" FontSize="15"
+      <Button Grid.Column="0"
+              Classes="secondary-action"
+              Content="← Back to Cart"
+              Name="BackButton"
+              Padding="16,10"
+              CornerRadius="8"
+              FontWeight="SemiBold"
+              HorizontalAlignment="Left"/>
+      <Button Grid.Column="1"
+              Classes="accent-action"
+              Content="Pay Now →"
+              Name="PayButton"
+              FontWeight="SemiBold"
+              FontSize="15"
               Padding="24,12" CornerRadius="8"/>
     </Grid>
 

@@ -42,8 +42,8 @@
                    FontSize="12"/>
         <TextBox Text="{Binding Username, Mode=TwoWay}"
                 PlaceholderText="Enter username"
-                Background="{DynamicResource Brush.LightBrown}" 
-                BorderBrush="{DynamicResource Brush.Light}" 
+                Background="{DynamicResource Brush.DarkGround}" 
+                BorderBrush="{DynamicResource Brush.Light}"
                 Foreground="{DynamicResource Brush.Light}"
                 Padding="10"
                 CornerRadius="6"/>
@@ -56,7 +56,7 @@
         <TextBox Text="{Binding Password, Mode=TwoWay}"
                  PasswordChar="*"
                  PlaceholderText="Enter password"
-                 Background="{DynamicResource Brush.LightBrown}"
+                 Background="{DynamicResource Brush.DarkGround}"
                  BorderBrush="{DynamicResource Brush.Light}"
                  Foreground="{DynamicResource Brush.Light}"
                  Padding="10" CornerRadius="6"/>
@@ -67,7 +67,8 @@
               Name="AuthActionButton"
               Background="{DynamicResource Brush.Accent}"
               Foreground="{DynamicResource Brush.Brown}"
-              FontWeight="Bold" FontSize="15"
+              FontWeight="Bold"
+              FontSize="15"
               Padding="12"
               CornerRadius="8"
               HorizontalAlignment="Stretch"

@@ -4,6 +4,113 @@
              x:Class="Desktop.Avalonia.Views.ProductListView"
              x:DataType="vm:ProductListViewModel">
 
+  <UserControl.Styles>
+    <Style Selector="ListBox#ProductList > ListBoxItem">
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="Margin" Value="0"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    </Style>
+
+    <Style Selector="ListBox#ProductList > ListBoxItem:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style Selector="ListBox#ProductList > ListBoxItem:selected /template/ ContentPresenter">
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style Selector="ListBox#ProductList > ListBoxItem:selected:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style Selector="ListBox#ProductList ListBoxItem Border.product-card">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderBrush" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <Style Selector="ListBox#ProductList ListBoxItem:pointerover Border.product-card">
+      <Setter Property="Background" Value="{DynamicResource Brush.Brown}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Brown}"/>
+    </Style>
+
+    <Style Selector="ListBox#ProductList ListBoxItem:selected Border.product-card">
+      <Setter Property="Background" Value="{DynamicResource Brush.Brown}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
+    </Style>
+
+    <Style Selector="ListBox#ProductList ListBoxItem:selected TextBlock.product-name,
+                   ListBox#ProductList ListBoxItem:pointerover TextBlock.product-name">
+      <Setter Property="Foreground" Value="{DynamicResource Brush.Light}"/>
+    </Style>
+
+    <Style Selector="ListBox#ProductList ListBoxItem:selected TextBlock.product-category,
+                   ListBox#ProductList ListBoxItem:pointerover TextBlock.product-category">
+      <Setter Property="Foreground" Value="{DynamicResource Brush.LightBrown}"/>
+    </Style>
+
+    <Style Selector="ListBox#ProductList ListBoxItem TextBlock.product-price">
+      <Setter Property="Foreground" Value="{DynamicResource Brush.DarkBrown}"/>
+    </Style>
+
+    <Style Selector="ListBox#ProductList ListBoxItem:selected TextBlock.product-price,
+                   ListBox#ProductList ListBoxItem:pointerover TextBlock.product-price">
+      <Setter Property="Foreground" Value="{DynamicResource Brush.Accent}"/>
+    </Style>
+
+    <Style Selector="Button.add-button">
+      <Setter Property="Background" Value="{DynamicResource Brush.Accent}"/>
+      <Setter Property="Foreground" Value="{DynamicResource Brush.DarkBrown}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.DarkBrown}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <Style Selector="Button.add-button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource Brush.Light}"/>
+      <Setter Property="Foreground" Value="{DynamicResource Brush.DarkBrown}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <Style Selector="Button.add-button:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource Brush.DarkBrown}"/>
+      <Setter Property="Foreground" Value="{DynamicResource Brush.Light}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.DarkBrown}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <Style Selector="TextBox.search-bar">
+      <Setter Property="Background" Value="{DynamicResource Brush.DarkBrown}"/>
+      <Setter Property="Foreground" Value="{DynamicResource Brush.Light}"/>
+      <Setter Property="CaretBrush" Value="{DynamicResource Brush.Light}"/>
+    </Style>
+
+    <Style Selector="TextBox.search-bar:pointerover /template/ Border#PART_BorderElement">
+      <Setter Property="Background" Value="{DynamicResource Brush.DarkBrown}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <Style Selector="TextBox.search-bar:focus /template/ Border#PART_BorderElement">
+      <Setter Property="Background" Value="{DynamicResource Brush.DarkBrown}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <Style Selector="TextBox.search-bar:pointerover">
+      <Setter Property="Foreground" Value="{DynamicResource Brush.Light}"/>
+    </Style>
+
+    <Style Selector="TextBox.search-bar:focus">
+      <Setter Property="Foreground" Value="{DynamicResource Brush.Light}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+  </UserControl.Styles>
+
   <Grid RowDefinitions="Auto,*,Auto" Margin="20">
 
     <!-- Header -->
@@ -21,14 +128,13 @@
     <!-- Search Box + Results -->
     <Grid Grid.Row="1" RowDefinitions="Auto,*">
       <TextBox Grid.Row="0"
+               Classes="search-bar"
                PlaceholderText="Search by name or ID..."
                Text="{Binding SearchText}"
                Margin="0,0,0,10"
-               Padding="12,8"
+               Padding="12,12"
                FontSize="14"
-               Background="{DynamicResource Brush.LightBrown}"
-               BorderBrush="{DynamicResource Brush.Light}"
-               Foreground="{DynamicResource Brush.Light}"
+               PlaceholderForeground="{DynamicResource Brush.Light}"
                CornerRadius="8"/>
 
       <ListBox Grid.Row="1"
@@ -40,31 +146,38 @@
                CornerRadius="8">
         <ListBox.ItemTemplate>
           <DataTemplate>
-            <Grid ColumnDefinitions="*,Auto,Auto" Margin="8,6">
-              <StackPanel Grid.Column="0">
-                <TextBlock Text="{Binding Name}"
+            <Border Classes="product-card"
+                    CornerRadius="8"
+                    Margin="8,6"
+                    Padding="12,10">
+              <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="12">
+                <StackPanel Grid.Column="0">
+                  <TextBlock Classes="product-name"
+                             Text="{Binding Name}"
+                             FontSize="14"
+                             FontWeight="Medium"
+                             Foreground="{DynamicResource Brush.DarkBrown}"/>
+                  <TextBlock Classes="product-category"
+                             Text="{Binding CategoryName}"
+                             FontSize="11"
+                             Foreground="{DynamicResource Brush.Brown}"/>
+                </StackPanel>
+                <TextBlock Grid.Column="1"
+                           Classes="product-price"
+                           Text="{Binding Price, StringFormat='Rp {0:N0}'}"
                            FontSize="14"
-                           FontWeight="Medium"
-                           Foreground="{DynamicResource Brush.DarkBrown}"/>
-                <TextBlock Text="{Binding CategoryName}"
-                           FontSize="11"
-                           Foreground="{DynamicResource Brush.Brown}"/>
-              </StackPanel>
-              <TextBlock Grid.Column="1"
-                         Text="{Binding Price, StringFormat='Rp {0:N0}'}"
-                         FontSize="14" FontWeight="SemiBold"
-                         Foreground="{DynamicResource Brush.Good}"
-                         VerticalAlignment="Center" Margin="12,0"/>
-              <Button Grid.Column="2"
-                      Content="+ Add"
-                      Tag="{Binding}"
-                      Name="AddBtn"
-                      Background="{DynamicResource Brush.Accent}"
-                      Foreground="{DynamicResource Brush.DarkBrown}"
-                      FontWeight="SemiBold"
-                      Padding="10,4"
-                      CornerRadius="6"/>
-            </Grid>
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"/>
+                <Button Grid.Column="2"
+                        Classes="add-button"
+                        Content="+ Add"
+                        Tag="{Binding}"
+                        Name="AddBtn"
+                        FontWeight="SemiBold"
+                        Padding="10,4"
+                        CornerRadius="6"/>
+              </Grid>
+            </Border>
           </DataTemplate>
         </ListBox.ItemTemplate>
       </ListBox>
@@ -72,10 +185,9 @@
 
     <!-- Footer nav -->
     <Button Grid.Row="2"
+            Classes="accent-action"
             Content="View Cart →"
             HorizontalAlignment="Right"
-            Background="{DynamicResource Brush.Accent}"
-            Foreground="{DynamicResource Brush.DarkBrown}"
             FontWeight="SemiBold"
             Padding="20,10"
             CornerRadius="8"
