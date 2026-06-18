@@ -28,12 +28,11 @@
     <Style Selector="ListBox#MethodList ListBoxItem Border.payment-method-card">
       <Setter Property="Background" Value="{DynamicResource Brush.Light}"/>
       <Setter Property="BorderBrush" Value="{DynamicResource Brush.DarkBrown}"/>
-      <Setter Property="BorderThickness" Value="1"/>
     </Style>
 
     <Style Selector="ListBox#MethodList ListBoxItem:pointerover Border.payment-method-card">
-      <Setter Property="Background" Value="{DynamicResource Brush.Accent}"/>
-      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Brown}"/>
+      <Setter Property="Background" Value="{DynamicResource Brush.DarkBrown}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
       <Setter Property="BorderThickness" Value="1"/>
     </Style>
 
@@ -43,6 +42,12 @@
       <Setter Property="BorderThickness" Value="1"/>
     </Style>
 
+    <Style Selector="ListBox#MethodList ListBoxItem TextBlock.payment-method-text">
+      <Setter Property="Foreground" Value="{DynamicResource Brush.DarkBrown}"/>
+    </Style>
+    <Style Selector="ListBox#MethodList ListBoxItem:pointerover TextBlock.payment-method-text">
+      <Setter Property="Foreground" Value="{DynamicResource Brush.Light}"/>
+    </Style>
     <Style Selector="ListBox#MethodList ListBoxItem:selected TextBlock.payment-method-text">
       <Setter Property="Foreground" Value="{DynamicResource Brush.Light}"/>
     </Style>
@@ -73,7 +78,6 @@
                 <TextBlock Classes="payment-method-text"
                            Text="{Binding}"
                            FontSize="14"
-                           Foreground="{DynamicResource Brush.DarkBrown}"
                            FontWeight="Medium"/>
               </Border>
             </DataTemplate>
@@ -119,23 +123,33 @@
       </StackPanel>
     </ScrollViewer>
 
-    <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="0,16,0,0">
-      <Button Grid.Column="0"
-              Classes="secondary-action"
-              Content="← Back to Cart"
+    <StackPanel Grid.Row="2"
+                Spacing="10"
+                Margin="16,0,0,0"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right">
+      <Button Classes="secondary-action"
+              Width="128"
+              Height="38"
+              Content="← Cart"
               Name="BackButton"
-              Padding="16,10"
               CornerRadius="8"
               FontWeight="SemiBold"
-              HorizontalAlignment="Left"/>
-      <Button Grid.Column="1"
-              Classes="accent-action"
+              HorizontalAlignment="Center"
+              VerticalContentAlignment="Center"
+              HorizontalContentAlignment="Center"/>
+      <Button Classes="accent-action"
+              Width="128"
+              Height="48"
+              HorizontalAlignment="Center"
+              VerticalContentAlignment="Center"
+              HorizontalContentAlignment="Center"
+              CornerRadius="8"
               Content="Pay Now →"
               Name="PayButton"
               FontWeight="SemiBold"
-              FontSize="15"
-              Padding="24,12" CornerRadius="8"/>
-    </Grid>
+              FontSize="15"/>
+    </StackPanel>
 
   </Grid>
 </UserControl>

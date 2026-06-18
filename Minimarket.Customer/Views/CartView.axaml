@@ -98,13 +98,27 @@
       <StackPanel Grid.Column="1"
                   Spacing="10"
                   Margin="16,0,0,0"
-                  VerticalAlignment="Bottom">
-        <Button Content="← Back" Name="BackButton"
+                  VerticalAlignment="Bottom"
+                  HorizontalAlignment="Right">
+        <Button Content="← Products"
+                Name="BackButton"
                 Classes="secondary-action"
-                Padding="16,10" CornerRadius="8"/>
-        <Button Content="Confirm Cart →" Name="ConfirmButton"
+                Width="128"
+                Height="38"
+                HorizontalAlignment="Center"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center"
+                CornerRadius="8"/>
+        <Button Content="Confirm →"
+                Width="128"
+                Height="48" 
+                Name="ConfirmButton"
                 Classes="accent-action"
-                FontWeight="SemiBold" Padding="16,10" CornerRadius="8"/>
+                FontWeight="SemiBold" 
+                HorizontalAlignment="Center"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center"
+                CornerRadius="8"/>
       </StackPanel>
     </Grid>
 
