@@ -24,24 +24,36 @@
       <ScrollViewer>
         <StackPanel>
           <!-- Header Row -->
-          <Grid ColumnDefinitions="*,120,60,120,120" Margin="12,8">
+          <Grid ColumnDefinitions="*,120,60,100,100,80" Margin="12,8">
             <TextBlock Grid.Column="0" Text="Product"    Foreground="{DynamicResource Brush.Brown}" FontWeight="SemiBold"/>
             <TextBlock Grid.Column="1" Text="Unit Price" Foreground="{DynamicResource Brush.Brown}" FontWeight="SemiBold"/>
             <TextBlock Grid.Column="2" Text="Qty"        Foreground="{DynamicResource Brush.Brown}" FontWeight="SemiBold"/>
             <TextBlock Grid.Column="3" Text="Discount"   Foreground="{DynamicResource Brush.Brown}" FontWeight="SemiBold"/>
             <TextBlock Grid.Column="4" Text="Line Total" Foreground="{DynamicResource Brush.Brown}" FontWeight="SemiBold"/>
+            <TextBlock Grid.Column="5" Text="Action"     Foreground="{DynamicResource Brush.Brown}" FontWeight="SemiBold" HorizontalAlignment="Center"/>
           </Grid>
           <Rectangle Height="1" Fill="{DynamicResource Brush.Brown}" Opacity="0.3"/>
 
-          <ItemsControl ItemsSource="{Binding Items}">
+          <ItemsControl Name="CartItemsControl" ItemsSource="{Binding Items}">
             <ItemsControl.ItemTemplate>
               <DataTemplate>
-                <Grid ColumnDefinitions="*,120,60,120,120" Margin="12,8">
-                  <TextBlock Grid.Column="0" Text="{Binding ProductName}"                                                               Foreground="{DynamicResource Brush.DarkBrown}"/>
-                  <TextBlock Grid.Column="1" Text="{Binding UnitPrice, StringFormat='Rp {0:N0}'}"                                      Foreground="{DynamicResource Brush.DarkBrown}"/>
-                  <TextBlock Grid.Column="2" Text="{Binding Quantity}"                                                                  Foreground="{DynamicResource Brush.DarkBrown}"/>
-                  <TextBlock Grid.Column="3" Text="{Binding DiscountAmount, StringFormat='- Rp {0:N0}'}"                               Foreground="{DynamicResource Brush.Danger}"/>
-                  <TextBlock Grid.Column="4" Text="{Binding LineTotal,      StringFormat='Rp {0:N0}'}"                                 Foreground="{DynamicResource Brush.DarkBrown}" FontWeight="SemiBold"/>
+                <Grid ColumnDefinitions="*,120,60,100,100,80" Margin="12,8">
+                  <TextBlock Grid.Column="0" Text="{Binding ProductName}"                                                               Foreground="{DynamicResource Brush.DarkBrown}" VerticalAlignment="Center"/>
+                  <TextBlock Grid.Column="1" Text="{Binding UnitPrice, StringFormat='Rp {0:N0}'}"                                      Foreground="{DynamicResource Brush.DarkBrown}" VerticalAlignment="Center"/>
+                  <TextBlock Grid.Column="2" Text="{Binding Quantity}"                                                                  Foreground="{DynamicResource Brush.DarkBrown}" VerticalAlignment="Center"/>
+                  <TextBlock Grid.Column="3" Text="{Binding DiscountAmount, StringFormat='- Rp {0:N0}'}"                               Foreground="{DynamicResource Brush.Danger}" VerticalAlignment="Center"/>
+                  <TextBlock Grid.Column="4" Text="{Binding LineTotal,      StringFormat='Rp {0:N0}'}"                                 Foreground="{DynamicResource Brush.DarkBrown}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                  <Button Grid.Column="5"
+                          Content="Remove"
+                          Classes="danger-action"
+                          Tag="{Binding}"
+                          Height="28"
+                          Padding="8,0"
+                          FontSize="12"
+                          HorizontalAlignment="Center"
+                          VerticalContentAlignment="Center"
+                          HorizontalContentAlignment="Center"
+                          CornerRadius="4"/>
                 </Grid>
               </DataTemplate>
             </ItemsControl.ItemTemplate>
@@ -53,40 +65,72 @@
     <!-- Totals Footer + Actions -->
     <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="0,16,0,0">
       <Border Grid.Column="0"
-              Background="{DynamicResource Brush.LightBrown}"
+              Background="{DynamicResource Brush.Light}"
+              BorderBrush="{DynamicResource Brush.DarkBrown}"
               CornerRadius="8"
+              BorderThickness="1"
               Padding="16,12">
         <StackPanel Spacing="6">
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="Subtotal"     Foreground="{DynamicResource Brush.Brown}"/>
-            <TextBlock Grid.Column="1"    Text="{Binding Subtotal,       StringFormat='Rp {0:N0}'}" Foreground="{DynamicResource Brush.DarkBrown}"/>
+            <TextBlock Text="Subtotal"
+                       Foreground="{DynamicResource Brush.Brown}"/>
+            <TextBlock Grid.Column="1"
+                       Text="{Binding Subtotal, StringFormat='Rp {0:N0}'}"
+                       Foreground="{DynamicResource Brush.DarkBrown}"/>
           </Grid>
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="Discount"     Foreground="{DynamicResource Brush.Danger}"/>
-            <TextBlock Grid.Column="1"    Text="{Binding DiscountAmount, StringFormat='- Rp {0:N0}'}" Foreground="{DynamicResource Brush.Danger}"/>
+            <TextBlock Text="Discount"
+                       Foreground="{DynamicResource Brush.Danger}"/>
+            <TextBlock Grid.Column="1"
+                       Text="{Binding DiscountAmount, StringFormat='- Rp {0:N0}'}"
+                       Foreground="{DynamicResource Brush.Danger}"/>
           </Grid>
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="Tax"          Foreground="{DynamicResource Brush.Brown}"/>
-            <TextBlock Grid.Column="1"    Text="{Binding TaxAmount,      StringFormat='+ Rp {0:N0}'}" Foreground="{DynamicResource Brush.Brown}"/>
+            <TextBlock Text="Tax"
+                       Foreground="{DynamicResource Brush.Brown}"/>
+            <TextBlock Grid.Column="1" 
+                       Text="{Binding TaxAmount, StringFormat='+ Rp {0:N0}'}"
+                       Foreground="{DynamicResource Brush.Brown}"/>
           </Grid>
           <Rectangle Height="1" Fill="{DynamicResource Brush.Brown}" Opacity="0.3"/>
           <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Text="Total"        FontWeight="Bold" FontSize="16" Foreground="{DynamicResource Brush.DarkBrown}"/>
-            <TextBlock Grid.Column="1"    Text="{Binding Total, StringFormat='Rp {0:N0}'}"
-                       FontWeight="Bold"  FontSize="16" Foreground="{DynamicResource Brush.Good}"/>
+            <TextBlock Text="Total"
+                       FontWeight="Bold"
+                       FontSize="16"
+                       Foreground="{DynamicResource Brush.DarkBrown}"/>
+            <TextBlock Grid.Column="1"
+                       Text="{Binding Total, StringFormat='Rp {0:N0}'}"
+                       FontWeight="Bold" 
+                       FontSize="16"
+                       Foreground="{DynamicResource Brush.Brown}"/>
           </Grid>
         </StackPanel>
       </Border>
 
-      <StackPanel Grid.Column="1" Spacing="10" Margin="16,0,0,0" VerticalAlignment="Bottom">
-        <Button Content="← Back" Name="BackButton"
-                Background="{DynamicResource Brush.Brown}"
-                Foreground="{DynamicResource Brush.Light}"
-                Padding="16,10" CornerRadius="8"/>
-        <Button Content="Confirm Cart →" Name="ConfirmButton"
-                Background="{DynamicResource Brush.Accent}"
-                Foreground="{DynamicResource Brush.DarkBrown}"
-                FontWeight="SemiBold" Padding="16,10" CornerRadius="8"/>
+      <StackPanel Grid.Column="1"
+                  Spacing="10"
+                  Margin="16,0,0,0"
+                  VerticalAlignment="Bottom"
+                  HorizontalAlignment="Right">
+        <Button Content="← Products"
+                Name="BackButton"
+                Classes="secondary-action"
+                Width="128"
+                Height="38"
+                HorizontalAlignment="Center"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center"
+                CornerRadius="8"/>
+        <Button Content="Confirm →"
+                Width="128"
+                Height="48" 
+                Name="ConfirmButton"
+                Classes="accent-action"
+                FontWeight="SemiBold" 
+                HorizontalAlignment="Center"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center"
+                CornerRadius="8"/>
       </StackPanel>
     </Grid>
 

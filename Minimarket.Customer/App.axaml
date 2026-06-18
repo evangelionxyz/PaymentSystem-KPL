@@ -3,7 +3,76 @@
              x:Class="Desktop.Avalonia.App"
              RequestedThemeVariant="Default">
     <Application.Styles>
-        <FluentTheme />
+        <FluentTheme>
+            <FluentTheme.Palettes>
+                <ColorPaletteResources x:Key="Light" Accent="#FFB74D" />
+                <ColorPaletteResources x:Key="Dark" Accent="#FFB74D" />
+            </FluentTheme.Palettes>
+        </FluentTheme>
+
+        <!-- Global Button Styles -->
+        <Style Selector="Button.accent-action">
+            <Setter Property="Background" Value="{DynamicResource Brush.Accent}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Brush.DarkBrown}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.DarkBrown}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style Selector="Button.accent-action:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Brown}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Light}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style Selector="Button.accent-action:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.DarkBrown}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Light}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style Selector="Button.secondary-action">
+            <Setter Property="Background" Value="{DynamicResource Brush.Brown}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Light}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style Selector="Button.secondary-action:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Accent}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Brush.DarkBrown}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.DarkBrown}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style Selector="Button.secondary-action:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.DarkBrown}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Light}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style Selector="Button.danger-action">
+            <Setter Property="Background" Value="{DynamicResource Brush.Danger}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Light}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.DarkBrown}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style Selector="Button.danger-action:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.DarkBrown}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Danger}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Danger}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style Selector="Button.danger-action:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Danger}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Brush.DarkBrown}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Light}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
     </Application.Styles>
 
     <Application.Resources>
@@ -19,10 +88,10 @@
         <SolidColorBrush x:Key="Brush.Black" Color="{StaticResource Color.Black}" />
         <SolidColorBrush x:Key="Brush.DarkBrown" Color="{StaticResource Color.DarkBrown}" />
         <SolidColorBrush x:Key="Brush.Brown" Color="{StaticResource Color.Brown}" />
+        <SolidColorBrush x:Key="Brush.LightBrown" Color="{StaticResource Color.LightBrown}" />
         <SolidColorBrush x:Key="Brush.Light" Color="{StaticResource Color.Light}" />
         <SolidColorBrush x:Key="Brush.Accent" Color="{StaticResource Color.Accent}" />
         <SolidColorBrush x:Key="Brush.Danger" Color="{StaticResource Color.Danger}" />
         <SolidColorBrush x:Key="Brush.Good" Color="{StaticResource Color.Good}" />
-
     </Application.Resources>
 </Application>

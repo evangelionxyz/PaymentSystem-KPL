@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Minimarket.Core.Models;
 
+[BsonIgnoreExtraElements]
 public class Cart : BaseModel
 {
     [BsonElement("customerId")]

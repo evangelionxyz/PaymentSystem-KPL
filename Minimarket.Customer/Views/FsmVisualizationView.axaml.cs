@@ -2,7 +2,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Minimarket.Core.States;
-using System;
 
 namespace Desktop.Avalonia.Views;
 
@@ -20,6 +19,7 @@ public partial class FsmVisualizationView : UserControl
     public FsmVisualizationView()
     {
         InitializeComponent();
+        UpdateHighlight(CurrentState);
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -33,52 +33,58 @@ public partial class FsmVisualizationView : UserControl
 
     private void UpdateHighlight(TransactionState state)
     {
-        // Reset all 5 nodes
-        ResetNode(this.FindControl<Border>("NodeIdle"),              "#2C1A0E", "#412D15");
-        ResetNode(this.FindControl<Border>("NodeAwaitingPayment"),   "#2C1A0E", "#412D15");
-        ResetNode(this.FindControl<Border>("NodeProcessingPayment"), "#2C1A0E", "#412D15");
-        ResetNode(this.FindControl<Border>("NodeCompleted"),         "#2C1A0E", "#412D15");
-        ResetNode(this.FindControl<Border>("NodeCancelled"),         "#2C1A0E", "#412D15");
+        ResetNode(this.FindControl<Border>("NodeIdle"));
+        ResetNode(this.FindControl<Border>("NodeAwaitingPayment"));
+        ResetNode(this.FindControl<Border>("NodeProcessingPayment"));
+        ResetNode(this.FindControl<Border>("NodeCompleted"));
+        ResetNode(this.FindControl<Border>("NodeCancelled"));
 
-        // Highlight active node with palette-harmonious colours
         switch (state)
         {
             case TransactionState.Idle:
-                // Brown-tinted (neutral/resting)
-                HighlightNode(this.FindControl<Border>("NodeIdle"), "#1F150C", "#FFB74D");
+                HighlightNode(this.FindControl<Border>("NodeIdle"), "Brush.DarkBrown", "Brush.Accent", "Brush.Light");
                 break;
             case TransactionState.AwaitingPayment:
-                // Amber/Accent — cart ready, awaiting payment choice
-                HighlightNode(this.FindControl<Border>("NodeAwaitingPayment"), "#5C3D00", "#FFB74D");
+                HighlightNode(this.FindControl<Border>("NodeAwaitingPayment"), "Brush.Accent", "Brush.Light", "Brush.DarkBrown");
                 break;
             case TransactionState.ProcessingPayment:
-                // Brown mid-tone — processing in progress
-                HighlightNode(this.FindControl<Border>("NodeProcessingPayment"), "#412D15", "#F1CDA5");
+                HighlightNode(this.FindControl<Border>("NodeProcessingPayment"), "Brush.LightBrown", "Brush.Brown", "Brush.DarkBrown");
                 break;
             case TransactionState.Completed:
-                // Green (Good) — success
-                HighlightNode(this.FindControl<Border>("NodeCompleted"), "#1B5E20", "#81C784");
+                HighlightNode(this.FindControl<Border>("NodeCompleted"), "Brush.Good", "Brush.DarkBrown", "Brush.DarkBrown");
                 break;
             case TransactionState.Cancelled:
-                // Red (Danger) — failed/cancelled
-                HighlightNode(this.FindControl<Border>("NodeCancelled"), "#7C0000", "#FF3131");
+                HighlightNode(this.FindControl<Border>("NodeCancelled"), "Brush.Danger", "Brush.DarkBrown", "Brush.Light");
                 break;
         }
     }
 
-    private void HighlightNode(Border? border, string bgHex, string borderHex)
+    private void HighlightNode(Border? border, string backgroundKey, string borderKey, string textKey)
     {
-        if (border == null) return;
-        border.Background  = Brush.Parse(bgHex);
-        border.BorderBrush = Brush.Parse(borderHex);
-        border.Opacity     = 1.0;
+        SetNodeColors(border, backgroundKey, borderKey, textKey, 1.0);
     }
 
-    private void ResetNode(Border? border, string bgHex, string borderHex)
+    private void ResetNode(Border? border)
     {
-        if (border == null) return;
-        border.Background  = Brush.Parse(bgHex);
-        border.BorderBrush = Brush.Parse(borderHex);
-        border.Opacity     = 0.4;
+        SetNodeColors(border, "Brush.Brown", "Brush.LightBrown", "Brush.Light", 0.55);
+    }
+
+    private void SetNodeColors(Border? border, string backgroundKey, string borderKey, string textKey, double opacity)
+    {
+        if (border is null) return;
+
+        border.Background = GetBrush(backgroundKey);
+        border.BorderBrush = GetBrush(borderKey);
+        border.Opacity = opacity;
+
+        if (border.Child is TextBlock textBlock)
+        {
+            textBlock.Foreground = GetBrush(textKey);
+        }
+    }
+
+    private static IBrush GetBrush(string resourceKey)
+    {
+        return Application.Current?.Resources[resourceKey] as IBrush ?? Brushes.Transparent;
     }
 }
