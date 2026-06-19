@@ -71,5 +71,37 @@ public class PricingConfigCache
     }
 
     /// <summary>Creates a fresh TransactionFSM from the cached transition table.</summary>
-    public TransactionFSM CreateFsm() => new TransactionFSM(MachineStates);
+    public TransactionFSM CreateFsm() => new TransactionFSM(GetEffectiveMachineStates());
+
+    private IReadOnlyList<MachineStateTransition> GetEffectiveMachineStates()
+    {
+        return IsValidMachineStateTable(MachineStates)
+            ? MachineStates
+            : GetDefaultMachineStates();
+    }
+
+    private static bool IsValidMachineStateTable(IEnumerable<MachineStateTransition> transitions)
+    {
+        var normalized = transitions
+            .Select(t => $"{(uint)t.From}|{t.Trigger}|{(uint)t.To}")
+            .OrderBy(x => x)
+            .ToList();
+
+        var expected = GetDefaultMachineStates()
+            .Select(t => $"{(uint)t.From}|{t.Trigger}|{(uint)t.To}")
+            .OrderBy(x => x)
+            .ToList();
+
+        return normalized.SequenceEqual(expected);
+    }
+
+    private static List<MachineStateTransition> GetDefaultMachineStates() =>
+    [
+        new() { From = TransactionState.Idle,              To = TransactionState.AwaitingPayment,   Trigger = "CartConfirmed" },
+        new() { From = TransactionState.AwaitingPayment,   To = TransactionState.ProcessingPayment, Trigger = "PaymentSelected" },
+        new() { From = TransactionState.ProcessingPayment, To = TransactionState.Completed,         Trigger = "PaymentConfirmed" },
+        new() { From = TransactionState.ProcessingPayment, To = TransactionState.Cancelled,         Trigger = "PaymentFailed" },
+        new() { From = TransactionState.Completed,         To = TransactionState.Idle,              Trigger = "Reset" },
+        new() { From = TransactionState.Cancelled,         To = TransactionState.Idle,              Trigger = "Reset" },
+    ];
 }
