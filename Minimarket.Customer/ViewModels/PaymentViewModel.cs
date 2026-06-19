@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Minimarket.Core.Models;
 using Minimarket.Core.Services;
+using Minimarket.Core.States;
 
 namespace Desktop.Avalonia.ViewModels;
 
@@ -32,6 +33,8 @@ public class PaymentViewModel : INotifyPropertyChanged
     public decimal FeeAmount   { get => _feeAmount;   set { _feeAmount = value;   OnPropertyChanged(); } }
     public decimal FinalTotal  { get => _finalTotal;  set { _finalTotal = value;  OnPropertyChanged(); } }
     public string ErrorMessage { get => _errorMessage; set { _errorMessage = value; OnPropertyChanged(); } }
+    public TransactionState CurrentFsmState => _cartVm.FsmState;
+    public string CurrentFsmStateDisplay => _cartVm.FsmStateDisplay;
 
     private readonly Dictionary<string, decimal> _fees;
 
@@ -40,6 +43,17 @@ public class PaymentViewModel : INotifyPropertyChanged
         _api    = api;
         _cartVm = cartVm;
         _fees   = fees;
+
+        _cartVm.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName is nameof(CartViewModel.Total) or nameof(CartViewModel.FsmState) or nameof(CartViewModel.FsmStateDisplay))
+            {
+                RecalculateFee();
+                OnPropertyChanged(nameof(CurrentFsmState));
+                OnPropertyChanged(nameof(CurrentFsmStateDisplay));
+            }
+        };
+
         RecalculateFee();
     }
 
@@ -56,10 +70,17 @@ public class PaymentViewModel : INotifyPropertyChanged
         {
             ErrorMessage = string.Empty;
             _cartVm.TriggerFsm("PaymentSelected");
-            var receipt = await _api.ProcessPaymentAsync(_cartVm.CartId, SelectedMethod);
+
+            var receipt = await _api.ProcessPaymentAsync(_cartVm.CartId, SelectedMethod, _cartVm.CustomerId);
             if (receipt is not null)
+            {
                 _cartVm.TriggerFsm("PaymentConfirmed");
-            return receipt;
+                return receipt;
+            }
+
+            _cartVm.TriggerFsm("PaymentFailed");
+            ErrorMessage = "Payment was not processed. Please try again.";
+            return null;
         }
         catch (Exception ex)
         {

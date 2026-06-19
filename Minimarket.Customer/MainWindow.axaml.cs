@@ -11,12 +11,12 @@ public partial class MainWindow : Window
     private MainWindowViewModel Vm => (MainWindowViewModel)DataContext!;
 
     // Page references
-    private ProductListView _productListPage = null!;
-    private CartView        _cartPage = null!;
-    private PaymentView     _payPage  = null!;
-    private ReceiptView     _rcptPage = null!;
-    private AuthView        _authPage = null!;
-    private Grid            _mainPOSGrid = null!;
+    private ProductListView? _productListPage = null;
+    private CartView? _cartPage = null;
+    private PaymentView? _payPage  = null;
+    private ReceiptView? _rcptPage = null;
+    private AuthView? _authPage = null;
+    private Grid? _mainPOSGrid = null;
 
     public MainWindow()
     {
@@ -28,12 +28,12 @@ public partial class MainWindow : Window
     private async void OnLoaded(object? sender, RoutedEventArgs e)
     {
         // Grab named controls
-        _productListPage = this.FindControl<ProductListView>("ProductListPage")!;
-        _cartPage = this.FindControl<CartView>("CartPage")!;
-        _payPage  = this.FindControl<PaymentView>("PaymentPage")!;
-        _rcptPage = this.FindControl<ReceiptView>("ReceiptPage")!;
-        _authPage = this.FindControl<AuthView>("AuthPage")!;
-        _mainPOSGrid = this.FindControl<Grid>("MainPOSGrid")!;
+        _productListPage = this.FindControl<ProductListView>("ProductListPage");
+        _cartPage = this.FindControl<CartView>("CartPage");
+        _payPage  = this.FindControl<PaymentView>("PaymentPage");
+        _rcptPage = this.FindControl<ReceiptView>("ReceiptPage");
+        _authPage = this.FindControl<AuthView>("AuthPage");
+        _mainPOSGrid = this.FindControl<Grid>("MainPOSGrid");
 
         _authPage.AuthCompleted += (sender, args) =>
         {
@@ -47,7 +47,9 @@ public partial class MainWindow : Window
         await Vm.InitializeAsync();
 
         if (!Vm.Cache.IsConnected)
+        {
             this.FindControl<Border>("OfflineBanner")!.IsVisible = true;
+        }
 
         WireButtons();
         ShowPage(AppPage.ProductList);
