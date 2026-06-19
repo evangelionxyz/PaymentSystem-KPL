@@ -52,24 +52,46 @@ public class DatabaseSeeder
         await _rulesCollection.InsertManyAsync(defaults);
     }
 
-    /// <summary>Inserts 6 default FSM transitions if the collection is empty.</summary>
+    /// <summary>Ensures the FSM transition table matches the current payment flow.</summary>
     public async Task SeedMachineStatesAsync()
     {
-        if (await _statesCollection.CountDocumentsAsync(FilterDefinition<MachineStateTransition>.Empty) > 0)
+        var expectedTransitions = GetDefaultMachineStates();
+        var existingTransitions = await _statesCollection.Find(FilterDefinition<MachineStateTransition>.Empty).ToListAsync();
+
+        if (IsSameTransitionTable(existingTransitions, expectedTransitions))
             return;
 
-        var transitions = new List<MachineStateTransition>
+        if (existingTransitions.Count > 0)
         {
-            new() { From = TransactionState.Idle,              To = TransactionState.AwaitingPayment,    Trigger = "CartConfirmed"     },
-            new() { From = TransactionState.AwaitingPayment,   To = TransactionState.ProcessingPayment,  Trigger = "PaymentSelected"   },
-            new() { From = TransactionState.ProcessingPayment, To = TransactionState.Completed,          Trigger = "PaymentConfirmed"  },
-            new() { From = TransactionState.ProcessingPayment, To = TransactionState.Cancelled,          Trigger = "PaymentFailed"     },
-            new() { From = TransactionState.Completed,         To = TransactionState.Idle,               Trigger = "Reset"             },
-            new() { From = TransactionState.Cancelled,         To = TransactionState.Idle,               Trigger = "Reset"             },
-        };
+            await _statesCollection.DeleteManyAsync(FilterDefinition<MachineStateTransition>.Empty);
+        }
 
-        await _statesCollection.InsertManyAsync(transitions);
+        await _statesCollection.InsertManyAsync(expectedTransitions);
     }
+    private static bool IsSameTransitionTable(IEnumerable<MachineStateTransition> existing, IEnumerable<MachineStateTransition> expected)
+    {
+        var existingNormalized = existing
+            .Select(t => $"{(uint)t.From}|{t.Trigger}|{(uint)t.To}")
+            .OrderBy(x => x)
+            .ToList();
+
+        var expectedNormalized = expected
+            .Select(t => $"{(uint)t.From}|{t.Trigger}|{(uint)t.To}")
+            .OrderBy(x => x)
+            .ToList();
+
+        return existingNormalized.SequenceEqual(expectedNormalized);
+    }
+
+    private static List<MachineStateTransition> GetDefaultMachineStates() =>
+    [
+        new() { From = TransactionState.Idle,              To = TransactionState.AwaitingPayment,   Trigger = "CartConfirmed" },
+        new() { From = TransactionState.AwaitingPayment,   To = TransactionState.ProcessingPayment, Trigger = "PaymentSelected" },
+        new() { From = TransactionState.ProcessingPayment, To = TransactionState.Completed,         Trigger = "PaymentConfirmed" },
+        new() { From = TransactionState.ProcessingPayment, To = TransactionState.Cancelled,         Trigger = "PaymentFailed" },
+        new() { From = TransactionState.Completed,         To = TransactionState.Idle,              Trigger = "Reset" },
+        new() { From = TransactionState.Cancelled,         To = TransactionState.Idle,              Trigger = "Reset" },
+    ];
 
     /// <summary>Inserts default customer and cashier users if the collection is empty.</summary>
     public async Task SeedUsersAsync()

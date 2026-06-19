@@ -19,6 +19,14 @@ public class CartViewModel : INotifyPropertyChanged
     // Stable cart ID for this session — must be a valid MongoDB ObjectId (24-char hex).
     // Using ObjectId.GenerateNewId() instead of Guid to satisfy BsonRepresentation(ObjectId).
     public string CartId { get; set; } = ObjectId.GenerateNewId().ToString();
+
+    private string? _customerId;
+    public string? CustomerId
+    {
+        get => _customerId;
+        set { _customerId = value; OnPropertyChanged(); }
+    }
+
     private bool _isVip;
     public bool IsVip
     {
@@ -44,11 +52,30 @@ public class CartViewModel : INotifyPropertyChanged
         _fsm   = cache.CreateFsm();
     }
 
+    public void ReloadFsm()
+    {
+        _fsm = _cache.CreateFsm();
+        OnPropertyChanged(nameof(FsmStateDisplay));
+        OnPropertyChanged(nameof(FsmState));
+    }
+
+    private void EnsureFsmLoaded()
+    {
+        if (_fsm.CurrentState == TransactionState.Idle &&
+            !_fsm.AvailableTransitions().Any() &&
+            _cache.MachineStates.Any())
+        {
+            ReloadFsm();
+        }
+    }
+
     // ======================================
     // FSM
     // ======================================
     public void TriggerFsm(string trigger)
     {
+        EnsureFsmLoaded();
+
         // Guard: silently ignore triggers that have no valid transition from the current state
         var available = _fsm.AvailableTransitions();
         if (!available.Any(t => string.Equals(t.Trigger, trigger, StringComparison.OrdinalIgnoreCase)))
@@ -66,13 +93,6 @@ public class CartViewModel : INotifyPropertyChanged
     {
         try
         {
-            // Online flow: Idle → AwaitingPayment on first item add.
-            // If already AwaitingPayment (items already in cart), don't fire any trigger.
-            if (_fsm.CurrentState == TransactionState.Idle)
-            {
-                TriggerFsm("CartConfirmed");
-            }
-
             var cart = await _api.AddToCartAsync(CartId, product.ID!, 1);
             if (cart is not null)
             {
@@ -82,7 +102,7 @@ public class CartViewModel : INotifyPropertyChanged
         }
         catch (Exception e)
         {
-            Trace.Assert(false, e.Message);    
+            Trace.Assert(false, e.Message);
         }
     }
 
@@ -139,7 +159,7 @@ public class CartViewModel : INotifyPropertyChanged
 
     private Cart BuildLocalCart()
     {
-        var c = new Cart { ID = CartId };
+        var c = new Cart { ID = CartId, CustomerId = CustomerId };
         foreach (var i in Items) c.Items.Add(i);
         return c;
     }
@@ -155,8 +175,7 @@ public class CartViewModel : INotifyPropertyChanged
         Items.Clear();
         Subtotal = DiscountAmount = TaxAmount = Total = 0;
         CartId = ObjectId.GenerateNewId().ToString();
-        _fsm = _cache.CreateFsm();
-        OnPropertyChanged(nameof(FsmStateDisplay));
+        ReloadFsm();
         OnPropertyChanged(nameof(CartId));
     }
 

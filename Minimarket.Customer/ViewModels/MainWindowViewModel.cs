@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Minimarket.Core.Models;
 using Minimarket.Core.Services;
 using MongoDB.Bson;
 
@@ -70,10 +71,14 @@ public class MainWindowViewModel : INotifyPropertyChanged
             if (e.PropertyName == nameof(AuthVm.AuthenticatedUser))
             {
                 OnPropertyChanged(nameof(IsAuthenticated));
-                if (IsAuthenticated)
+
+                var authenticatedUser = AuthVm.AuthenticatedUser;
+                CartVm.CustomerId = authenticatedUser?.ID;
+                CartVm.IsVip = IsVipCustomer(authenticatedUser);
+
+                if (authenticatedUser is not null)
                 {
                     CartVm.CartId = ObjectId.GenerateNewId().ToString();
-                    CartVm.IsVip = AuthVm.Username.EndsWith("vip", StringComparison.OrdinalIgnoreCase);
                 }
             }
         };
@@ -82,6 +87,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     public async Task InitializeAsync()
     {
         await Cache.LoadAsync();
+        CartVm.ReloadFsm();
         await ProductListVm.LoadProductsAsync();
         OnPropertyChanged(nameof(ConnectivityBanner));
     }
@@ -110,6 +116,9 @@ public class MainWindowViewModel : INotifyPropertyChanged
         ReceiptVm.StartNewTransaction();
         CurrentPage = AppPage.ProductList;
     }
+
+    private static bool IsVipCustomer(User? user) =>
+        user?.Username.EndsWith("vip", StringComparison.OrdinalIgnoreCase) == true;
 
     public event PropertyChangedEventHandler? PropertyChanged;
     protected void OnPropertyChanged([CallerMemberName] string? name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
